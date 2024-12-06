@@ -13,3 +13,20 @@
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
+/* Drag and drop styles */
+.drop-target.drag-over::after {
+  border: 2px dashed #3b82f6;
+  border-radius: 0.375rem;
+}
+
+.drop-target.drag-over .folder-name {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.drop-indicator {
+  height: 2px;
+  background-color: #3b82f6;
+  transform: scaleX(0.98);
+}
