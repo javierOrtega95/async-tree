@@ -1,9 +1,14 @@
 .tree-folder {
   display: flex;
   align-items: center;
+  border-radius: 0.3rem;
   gap: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
+}
+
+.tree-folder:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .icon {
