@@ -3,6 +3,12 @@ export enum TreeNodeType {
   Item = 'item',
 }
 
+export enum DropPosition {
+  Before = 'before',
+  Inside = 'inside',
+  After = 'after',
+}
+
 export type TreeNode<T = object> = {
   id: string
   name: string
@@ -43,6 +49,13 @@ export interface TreeNodeProps
   node: FolderNode | ItemNode
   level: number
   onFolderClick: (node: FolderNode) => void
+  onDragStart: (event: React.DragEvent, node: TreeNode) => void
+  onDragOver: (event: React.DragEvent) => void
+  onDrop: (
+    event: React.DragEvent,
+    target: TreeNode,
+    position: DropPosition
+  ) => void
 }
 
 export interface FolderProps {
@@ -59,3 +72,12 @@ export interface ItemProps {
 }
 
 export type FoldersMap = Map<FolderNode['id'], FolderState>
+
+export type DropData = {
+  tree: TreeNode[]
+  source: TreeNode
+  target: TreeNode
+  position: DropPosition
+  sourceParent: FolderNode
+  targetParent: FolderNode
+}
