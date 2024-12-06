@@ -8,6 +8,7 @@ export default function TreeNode({
   level,
   isOpen,
   isLoading,
+  onFolderClick,
 }: TreeNodeProps): JSX.Element {
   const isFolder = node.nodeType === TreeNodeType.Folder
   const isItem = node.nodeType === TreeNodeType.Item
@@ -18,6 +19,7 @@ export default function TreeNode({
     node: node as FolderNode,
     isOpen,
     isLoading,
+    onClick: onFolderClick,
   }
 
   const itemsProps = {
@@ -28,6 +30,7 @@ export default function TreeNode({
   return (
     <div id={node.id} className='tree-node' style={{ paddingLeft: left }}>
       {isFolder && <DefaultFolder {...folderProps} />}
+
       {isItem && <DefaultItem {...itemsProps} />}
     </div>
   )

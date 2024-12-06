@@ -5,9 +5,10 @@ export default function TreeFolder({
   node,
   isOpen,
   isLoading,
+  onClick,
 }: FolderProps): JSX.Element {
   return (
-    <div className='tree-folder'>
+    <div className='tree-folder' onClick={() => onClick(node)}>
       {isLoading && (
         <svg
           width='12'
