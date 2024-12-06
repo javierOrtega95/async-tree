@@ -8,8 +8,7 @@ import {
   TreeNode,
   TreeNodeType,
 } from './types'
-import { getFoldersMap } from './utils'
-import { recursiveTreeMap } from './utils/recursive'
+import { getFoldersMap, recursiveTreeMap } from './utils'
 
 const ROOT_NODE: FolderNode = {
   id: 'root',
@@ -20,6 +19,8 @@ const ROOT_NODE: FolderNode = {
 
 export default function AsyncTree({
   initialTree,
+  CustomItem,
+  CustomFolder,
   fetchOnce = true,
   loadChildren,
 }: AsyncTreeProps): JSX.Element {
@@ -104,6 +105,8 @@ export default function AsyncTree({
           level={level}
           isOpen={isOpen}
           isLoading={isLoading}
+          CustomItem={CustomItem}
+          CustomFolder={CustomFolder}
           onFolderClick={handleFolderClick}
         />
 

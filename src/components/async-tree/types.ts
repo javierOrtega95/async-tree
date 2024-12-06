@@ -32,11 +32,14 @@ export interface ItemNode extends BaseNode {
 export interface AsyncTreeProps {
   initialTree: TreeNode[]
   fetchOnce?: boolean
+  CustomFolder?: React.FC<FolderProps>
+  CustomItem?: React.FC<ItemProps>
   loadChildren: (folder: FolderNode) => Promise<TreeNode[]>
 }
 
 export interface TreeNodeProps
-  extends Pick<FolderProps, 'isLoading' | 'isOpen'> {
+  extends Pick<AsyncTreeProps, 'CustomFolder' | 'CustomItem'>,
+    Pick<FolderProps, 'isLoading' | 'isOpen'> {
   node: FolderNode | ItemNode
   level: number
   onFolderClick: (node: FolderNode) => void

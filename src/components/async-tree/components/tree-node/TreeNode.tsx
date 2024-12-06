@@ -6,6 +6,8 @@ import './TreeNode.css'
 export default function TreeNode({
   node,
   level,
+  CustomItem,
+  CustomFolder,
   isOpen,
   isLoading,
   onFolderClick,
@@ -27,11 +29,17 @@ export default function TreeNode({
     node: node as ItemNode,
   }
 
+  const FolderComponent = CustomFolder ?? DefaultFolder
+  const TreeFolder = <FolderComponent {...folderProps} />
+
+  const ItemComponent = CustomItem ?? DefaultItem
+  const TreeItem = <ItemComponent {...itemsProps} />
+
   return (
     <div id={node.id} className='tree-node' style={{ paddingLeft: left }}>
-      {isFolder && <DefaultFolder {...folderProps} />}
+      {isFolder && TreeFolder}
 
-      {isItem && <DefaultItem {...itemsProps} />}
+      {isItem && TreeItem}
     </div>
   )
 }
