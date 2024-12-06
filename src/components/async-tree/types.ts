@@ -26,3 +26,21 @@ export interface ItemNode extends BaseNode {
 export interface AsyncTreeProps {
   initialTree: TreeNode[]
 }
+
+export interface TreeNodeProps
+  extends Pick<FolderProps, 'isLoading' | 'isOpen'> {
+  node: FolderNode | ItemNode
+  level: number
+}
+
+export interface FolderProps {
+  node: FolderNode
+  level: number
+  isOpen: boolean
+  isLoading: boolean
+}
+
+export interface ItemProps {
+  node: ItemNode
+  level: number
+}

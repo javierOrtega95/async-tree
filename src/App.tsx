@@ -33,7 +33,7 @@ function App() {
     <>
       <h1>Async Tree Demo</h1>
 
-      <main>
+      <main className='tree-container'>
         <AsyncTree initialTree={initialTree} />
       </main>
     </>

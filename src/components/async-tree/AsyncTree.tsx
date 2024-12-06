@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { AsyncTreeProps, FolderNode, TreeNode, TreeNodeType } from './types'
+import { default as TreeNodeComponent } from './components/tree-node/TreeNode'
 
 const ROOT_NODE: FolderNode = {
   id: 'root',
@@ -24,6 +25,13 @@ export default function AsyncTree({
 
     return (
       <React.Fragment key={node.id}>
+        <TreeNodeComponent
+          node={node}
+          level={level}
+          isOpen={false}
+          isLoading={false}
+        />
+
         {isFolder &&
           node.children?.map((child) => renderNode(child, level + 1))}
       </React.Fragment>
