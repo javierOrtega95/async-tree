@@ -1,4 +1,10 @@
-import { FoldersMap, TreeNode, TreeNodeType } from '../types'
+import {
+  FolderNode,
+  FoldersMap,
+  ParentMap,
+  TreeNode,
+  TreeNodeType,
+} from '../types'
 
 export function recursiveTreeMap(
   tree: TreeNode[],
@@ -15,8 +21,28 @@ export function recursiveTreeMap(
   })
 }
 
+export function getParentMap(tree: TreeNode[]): ParentMap {
+  const parentMap: ParentMap = new Map()
+
+  initializeParentMap(tree, null)
+
+  function initializeParentMap(nodes: TreeNode[], parent: FolderNode | null) {
+    for (const node of nodes) {
+      parentMap.set(node.id, parent)
+
+      const isFolder = 'children' in node
+
+      if (isFolder && node.children.length) {
+        initializeParentMap(node.children, node)
+      }
+    }
+  }
+
+  return parentMap
+}
+
 export function getFoldersMap(tree: TreeNode[]): FoldersMap {
-  const foldersMap = new Map()
+  const foldersMap: FoldersMap = new Map()
 
   initializeFolderMap(tree)
 
@@ -29,7 +55,7 @@ export function getFoldersMap(tree: TreeNode[]): FoldersMap {
           hasFetched: false,
         })
 
-        if (node.children?.length) initializeFolderMap(node.children)
+        if (node.children.length) initializeFolderMap(node.children)
       }
     }
   }

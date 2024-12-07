@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { default as TreeNodeComponent } from './components/tree-node/TreeNode'
 import {
   AsyncTreeProps,
+  DropPosition,
   FolderNode,
   FoldersMap,
   FolderState,
   TreeNode,
   TreeNodeType,
 } from './types'
-import { getFoldersMap, recursiveTreeMap } from './utils'
+import { getFoldersMap, getParentMap, recursiveTreeMap } from './utils'
+import { isValidMove } from './utils/validations'
 
 const ROOT_NODE: FolderNode = {
   id: 'root',
@@ -37,6 +39,8 @@ export default function AsyncTree({
     setFoldersMap(getFoldersMap(initialTree))
   }, [initialTree])
 
+  const parentMap = useMemo(() => getParentMap(tree), [tree])
+
   const updateFolderState = (
     folderId: FolderNode['id'],
     update: FolderState
@@ -53,11 +57,11 @@ export default function AsyncTree({
     updateFolderState(folderId, { isOpen: false })
   }
 
-  function updateFolderChildren(
+  const updateFolderChildren = (
     tree: TreeNode[],
     folderId: TreeNode['id'],
     updatedChildren: TreeNode[]
-  ): TreeNode[] {
+  ) => {
     return recursiveTreeMap(tree, (node) => {
       if (node.id === folderId && node.nodeType === TreeNodeType.Folder) {
         return {
@@ -94,6 +98,47 @@ export default function AsyncTree({
     }
   }
 
+  const handleDragStart = (e: React.DragEvent, node: TreeNode) => {
+    e.dataTransfer.setData('application/json', JSON.stringify(node))
+    e.dataTransfer.effectAllowed = 'move'
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  const handleDrop = (
+    e: React.DragEvent,
+    target: TreeNode,
+    position: DropPosition
+  ) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const sourceData = e.dataTransfer.getData('application/json')
+    const source: TreeNode = JSON.parse(sourceData)
+
+    if (!source || source.id === target.id) return
+
+    const prevParent = parentMap.get(source.id)
+    const nextParent = parentMap.get(target.id)
+
+    if (!prevParent || !nextParent) return
+
+    const dropData = {
+      source,
+      target,
+      position,
+      prevParent,
+      nextParent,
+    }
+
+    const isValid = isValidMove({ ...dropData, parentMap })
+
+    if (!isValid) return
+  }
+
   const renderNode = (node: TreeNode, level: number = 0) => {
     const { isOpen = false, isLoading = false } = foldersMap.get(node.id) ?? {}
     const isFolder = node.nodeType === TreeNodeType.Folder
@@ -108,6 +153,9 @@ export default function AsyncTree({
           CustomItem={CustomItem}
           CustomFolder={CustomFolder}
           onFolderClick={handleFolderClick}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
         />
 
         {isFolder &&

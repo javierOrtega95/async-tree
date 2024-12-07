@@ -78,6 +78,8 @@ export type DropData = {
   source: TreeNode
   target: TreeNode
   position: DropPosition
-  sourceParent: FolderNode
-  targetParent: FolderNode
+  prevParent: FolderNode
+  nextParent: FolderNode
 }
+
+export type ParentMap = Map<TreeNode['id'], FolderNode | null>
