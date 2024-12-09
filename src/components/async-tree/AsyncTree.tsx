@@ -10,7 +10,8 @@ import {
   TreeNodeType,
 } from './types'
 import { getFoldersMap, getParentMap, recursiveTreeMap } from './utils'
-import { isValidMove } from './utils/validations'
+import isValidMove from './utils/validations'
+import moveNode from './utils/treeOperations'
 
 const ROOT_NODE: FolderNode = {
   id: 'root',
@@ -134,9 +135,13 @@ export default function AsyncTree({
       nextParent,
     }
 
-    const isValid = isValidMove({ ...dropData, parentMap })
+    if (!isValidMove({ ...dropData, parentMap })) return
 
-    if (!isValid) return
+    setTree((prevTree) => {
+      const newTree = moveNode({ tree: prevTree, ...dropData })
+
+      return newTree
+    })
   }
 
   const renderNode = (node: TreeNode, level: number = 0) => {

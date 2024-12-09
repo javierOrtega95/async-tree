@@ -7,7 +7,7 @@ import {
   TreeNodeType,
 } from '../types'
 
-export function isValidMove({
+export default function isValidMove({
   source,
   target,
   position,
