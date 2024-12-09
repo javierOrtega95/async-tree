@@ -12,13 +12,7 @@ import {
 import { getFoldersMap, getParentMap, recursiveTreeMap } from './utils'
 import isValidMove from './utils/validations'
 import moveNode from './utils/treeOperations'
-
-const ROOT_NODE: FolderNode = {
-  id: 'root',
-  name: 'root',
-  nodeType: TreeNodeType.Folder,
-  children: [],
-}
+import { ROOT_NODE } from './constants'
 
 export default function AsyncTree({
   initialTree,

@@ -9,6 +9,12 @@ import {
 import { default as DefaultFolder } from '../tree-folder/TreeFolder'
 import { default as DefaultItem } from '../tree-item/TreeItem'
 import './TreeNode.css'
+import {
+  THRESHOLD_AFTER_CLOSED_PERCENT,
+  THRESHOLD_AFTER_OPEN_PERCENT,
+  THRESHOLD_BEFORE_PERCENT,
+  THRESHOLD_MID_PERCENT,
+} from '../../constants'
 
 export default function TreeNode({
   node,
@@ -83,18 +89,22 @@ export default function TreeNode({
     let position: DropPosition
 
     if (isFolder) {
-      const bottomOffset = isOpen ? 1 : 0.75
+      const bottomThreshold = isOpen
+        ? THRESHOLD_AFTER_OPEN_PERCENT
+        : THRESHOLD_AFTER_CLOSED_PERCENT
 
-      if (relativeY < rect.height * 0.25) {
+      if (relativeY < rect.height * THRESHOLD_BEFORE_PERCENT) {
         position = DropPosition.Before
-      } else if (relativeY > rect.height * bottomOffset) {
+      } else if (relativeY > rect.height * bottomThreshold) {
         position = DropPosition.After
       } else {
         position = DropPosition.Inside
       }
     } else {
       position =
-        relativeY < rect.height * 0.5 ? DropPosition.Before : DropPosition.After
+        relativeY < rect.height * THRESHOLD_MID_PERCENT
+          ? DropPosition.Before
+          : DropPosition.After
     }
 
     setDragPosition(position)
