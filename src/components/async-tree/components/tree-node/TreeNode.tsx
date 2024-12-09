@@ -47,10 +47,7 @@ export default function TreeNode({
   }
 
   const FolderComponent = CustomFolder ?? DefaultFolder
-  const TreeFolder = <FolderComponent {...folderProps} />
-
   const ItemComponent = CustomItem ?? DefaultItem
-  const TreeItem = <ItemComponent {...itemsProps} />
 
   const handleDragStart = (e: React.DragEvent) => {
     onDragStart(e, node)
@@ -88,7 +85,7 @@ export default function TreeNode({
     if (isFolder) {
       const bottomOffset = isOpen ? 1 : 0.75
 
-      if (relativeY < rect.height * 0.5) {
+      if (relativeY < rect.height * 0.25) {
         position = DropPosition.Before
       } else if (relativeY > rect.height * bottomOffset) {
         position = DropPosition.After
@@ -134,9 +131,9 @@ export default function TreeNode({
         <div className='drop-indicator' style={{ left }} />
       )}
 
-      {isFolder && TreeFolder}
+      {isFolder && <FolderComponent {...folderProps} />}
 
-      {isItem && TreeItem}
+      {isItem && <ItemComponent {...itemsProps} />}
 
       {dragPosition === DropPosition.After && (
         <div className='drop-indicator' style={{ left }} />
