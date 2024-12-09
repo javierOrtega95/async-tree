@@ -60,10 +60,7 @@ function isMovingFolderIntoDescendant(
   target: TreeNode,
   parentMap: ParentMap
 ): boolean {
-  if (isDescendant(source, target, parentMap)) {
-    console.warn('Cannot move a folder into one of its descendants')
-    return true
-  }
+  if (isDescendant(source, target, parentMap)) return true
 
   return false
 }
@@ -76,11 +73,7 @@ function isAlreadyInsideFolder(
   if (position === DropPosition.Inside) {
     const { children } = target as FolderNode
 
-    if (children.some((child) => child.id === source.id)) {
-      console.warn('Node is already inside the target')
-
-      return true
-    }
+    if (children.some((child) => child.id === source.id)) return true
   }
 
   return false
@@ -105,11 +98,7 @@ function isSamePosition({
   const newPosition =
     position === DropPosition.Before ? newTargetIndex : newTargetIndex + 1
 
-  if (sourceIndex === newPosition) {
-    console.warn('Source and target are in the same position')
-
-    return true
-  }
+  if (sourceIndex === newPosition) return true
 
   return false
 }

@@ -28,17 +28,12 @@ function handleSameParentMove({
   position,
   prevParent,
 }: Omit<DropData, 'nextParent'>): TreeNode[] {
-  console.log('Dropping into SAME parent')
-
   const { id, children } = prevParent
 
   const sourceIndex = children.findIndex((child) => child.id === source.id)
   const targetIndex = children.findIndex((child) => child.id === target.id)
 
-  if (sourceIndex === -1 || targetIndex === -1) {
-    console.error('Invalid source or target node index', { source, target })
-    return tree
-  }
+  if (sourceIndex === -1 || targetIndex === -1) return tree
 
   // adjust target index when the source node is before the target node
   const newTargetIndex =
@@ -92,15 +87,12 @@ function handleDifferentParentMove({
     }
 
     if (node.id === target.id && isDroppingInsideFolder) {
-      console.log('INSIDE a folder')
-
       const { children } = node as FolderNode
+
       return { ...node, children: [...children, source] }
     }
 
     if (node.id === nextParent.id && !isDroppingInsideFolder) {
-      console.log('Insert into NEW parent')
-
       const { children } = nextParent
       const targetIndex = children.findIndex((child) => child.id === target.id)
 
