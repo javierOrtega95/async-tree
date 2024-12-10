@@ -24,6 +24,7 @@ export default function AsyncTree({
   CustomFolder,
   fetchOnce = true,
   loadChildren,
+  onChange,
 }: AsyncTreeProps): JSX.Element {
   const [tree, setTree] = useState<TreeNode[]>([
     { ...ROOT_NODE, children: initialTree },
@@ -137,6 +138,9 @@ export default function AsyncTree({
 
     setTree((prevTree) => {
       const newTree = moveNode({ tree: prevTree, ...dropData })
+
+      // child of root node
+      onChange?.((newTree[0] as FolderNode).children)
 
       return newTree
     })

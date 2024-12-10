@@ -52,7 +52,11 @@ function App() {
       <h1>Async Tree Demo</h1>
 
       <main className='tree-container'>
-        <AsyncTree initialTree={initialTree} loadChildren={loadChildren} />
+        <AsyncTree
+          initialTree={initialTree}
+          loadChildren={loadChildren}
+          onChange={(newTree) => console.log(newTree)}
+        />
       </main>
     </>
   )
