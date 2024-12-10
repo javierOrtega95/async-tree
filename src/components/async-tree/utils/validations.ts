@@ -26,11 +26,11 @@ export default function isValidMove({
     return false
   }
 
-  const isReorderingSameParent =
+  const isOrderingSameParent =
     position !== DropPosition.Inside && prevParent.id === nextParent.id
 
   if (
-    isReorderingSameParent &&
+    isOrderingSameParent &&
     isSamePosition({ source, target, position, prevParent })
   ) {
     return false
