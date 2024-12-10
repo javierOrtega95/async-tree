@@ -1,4 +1,4 @@
-import { recursiveTreeMap } from '.'
+import { recursiveTreeMap } from './tree-recursive'
 import {
   DropData,
   DropPosition,
@@ -100,6 +100,7 @@ function handleDifferentParentMove({
         position === DropPosition.Before ? targetIndex : targetIndex + 1
 
       const newChildren = [...children]
+
       newChildren.splice(newPosition, 0, source)
 
       return {

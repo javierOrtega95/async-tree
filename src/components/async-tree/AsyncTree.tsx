@@ -9,9 +9,13 @@ import {
   TreeNode,
   TreeNodeType,
 } from './types'
-import { getFoldersMap, getParentMap, recursiveTreeMap } from './utils'
+import {
+  getFoldersMap,
+  getParentMap,
+  recursiveTreeMap,
+} from './utils/tree-recursive'
 import isValidMove from './utils/validations'
-import moveNode from './utils/treeOperations'
+import moveNode from './utils/tree-operations'
 import { ROOT_NODE } from './constants'
 
 export default function AsyncTree({
