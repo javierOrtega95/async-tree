@@ -140,6 +140,8 @@ export default function AsyncTree({
 
     if (!isValidMove({ ...dropData, parentMap })) return
 
+    /**@todo canDrop?.(dropData) */
+
     setTree((prevTree) => {
       const newTree = moveNode({ tree: prevTree, ...dropData })
 
