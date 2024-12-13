@@ -43,14 +43,18 @@ export default function AsyncTree({
 
   const updateFolderState = (
     folderId: FolderNode['id'],
-    update: FolderState
+    folderState: FolderState
   ) => {
-    setFoldersMap((prevState) =>
-      new Map(prevState).set(folderId, {
-        ...prevState.get(folderId),
-        ...update,
-      })
-    )
+    setFoldersMap((prevState) => {
+      const prevFolderState = prevState.get(folderId)
+
+      const newFolderState = {
+        ...prevFolderState,
+        ...folderState,
+      }
+
+      return new Map(prevState).set(folderId, newFolderState)
+    })
   }
 
   const handleFolderClose = (folderId: FolderNode['id']) => {
