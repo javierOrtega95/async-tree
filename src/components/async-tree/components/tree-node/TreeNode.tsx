@@ -34,10 +34,12 @@ export default function TreeNode({
 
   const isFolder = node.nodeType === TreeNodeType.Folder
   const isItem = node.nodeType === TreeNodeType.Item
+  const isDroppingInside = dragPosition === DropPosition.Inside
+
   const left = `${level}rem`
-  const className = `tree-node ${
-    dragPosition === DropPosition.Inside ? 'drop-target drag-over' : ''
-  }`
+
+  const dropOverClassName = isDroppingInside ? 'drop-target drag-over' : ''
+  const className = `tree-node ${dropOverClassName}`
 
   const folderProps = {
     level,
