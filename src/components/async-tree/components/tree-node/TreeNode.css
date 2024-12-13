@@ -16,6 +16,8 @@
 }
 
 .drop-indicator {
+  height: 2px;
+  background-color: #3b82f6;
   position: absolute;
   left: 0;
   right: 0;

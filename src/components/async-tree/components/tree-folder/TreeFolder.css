@@ -11,6 +11,16 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.drop-target.drag-over::after {
+  border: 2px dashed #3b82f6;
+  border-radius: 0.3rem;
+}
+
+.drop-target.drag-over .folder-name {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
 .icon {
   width: 1rem;
   height: 1rem;
