@@ -12,7 +12,7 @@ React component for managing an asynchronous tree.
 
 - **React**
 - **Vite**
-- **Bun**
+- **pnpm**
 
 ### Getting Started
 
@@ -21,9 +21,9 @@ cd async-tree
 ```
 
 ```bash
-bun install
+pnpm install
 ```
 
 ```bash
-bun dev
+pnpm dev
 ```
