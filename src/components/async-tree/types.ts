@@ -41,7 +41,7 @@ export interface AsyncTreeProps {
   CustomFolder?: React.FC<FolderProps>
   CustomItem?: React.FC<ItemProps>
   loadChildren: (folder: FolderNode) => Promise<TreeNode[]>
-  onChange?: (newTree: TreeNode[]) => void
+  onChange?: (changes: DropData) => void
 }
 
 export interface TreeNodeProps

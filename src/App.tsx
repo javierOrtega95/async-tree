@@ -55,7 +55,7 @@ function App() {
         <AsyncTree
           initialTree={initialTree}
           loadChildren={loadChildren}
-          onChange={(newTree) => console.log(newTree)}
+          onChange={(changes) => console.log({ changes })}
         />
       </main>
     </>

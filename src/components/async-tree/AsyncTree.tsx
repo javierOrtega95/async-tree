@@ -145,8 +145,10 @@ export default function AsyncTree({
     setTree((prevTree) => {
       const newTree = moveNode({ tree: prevTree, ...dropData })
 
-      // child of root node
-      onChange?.((newTree[0] as FolderNode).children)
+      const rootChildren = [...(newTree[0] as FolderNode).children]
+      const changes = { tree: rootChildren, ...dropData }
+
+      onChange?.(changes)
 
       return newTree
     })
