@@ -49,6 +49,7 @@ export interface TreeNodeProps
     Pick<FolderProps, 'isLoading' | 'isOpen'> {
   node: FolderNode | ItemNode
   level: number
+  children?: React.ReactNode
   onFolderClick: (node: FolderNode) => void
   onDragStart: (event: React.DragEvent, node: TreeNode) => void
   onDragOver: (event: React.DragEvent) => void
@@ -64,6 +65,7 @@ export interface FolderProps {
   level: number
   isOpen: boolean
   isLoading: boolean
+  childrenCount: number
   onClick: (folder: FolderNode) => void
 }
 

@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import './AsyncTree.css'
 import { default as TreeNodeComponent } from './components/tree-node/TreeNode'
+import { ROOT_NODE } from './constants'
 import {
   AsyncTreeProps,
   DropPosition,
@@ -9,14 +11,13 @@ import {
   TreeNode,
   TreeNodeType,
 } from './types'
+import moveNode from './utils/tree-operations'
 import {
   getFoldersMap,
   getParentMap,
   recursiveTreeMap,
 } from './utils/tree-recursive'
 import isValidMove from './utils/validations'
-import moveNode from './utils/tree-operations'
-import { ROOT_NODE } from './constants'
 
 export default function AsyncTree({
   initialTree,
@@ -171,14 +172,20 @@ export default function AsyncTree({
           onDragStart={handleDragStart}
           onDragOver={handleDragOver}
           onDrop={handleDrop}
-        />
-
-        {isFolder &&
-          isOpen &&
-          node.children.map((child) => renderNode(child, level + 1))}
+        >
+          {isFolder && isOpen && (
+            <ul role='group' className='tree-group'>
+              {node.children.map((child) => renderNode(child, level + 1))}
+            </ul>
+          )}
+        </TreeNodeComponent>
       </React.Fragment>
     )
   }
 
-  return <>{(tree[0] as FolderNode).children.map((node) => renderNode(node))}</>
+  return (
+    <ul role='tree' className='async-tree'>
+      {(tree[0] as FolderNode).children.map((node) => renderNode(node))}
+    </ul>
+  )
 }
