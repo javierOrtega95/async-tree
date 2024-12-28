@@ -1,4 +1,9 @@
-import { recursiveTreeMap } from './tree-recursive'
+import {
+  THRESHOLD_AFTER_CLOSED_PERCENT,
+  THRESHOLD_AFTER_OPEN_PERCENT,
+  THRESHOLD_BEFORE_PERCENT,
+  THRESHOLD_MID_PERCENT,
+} from '../constants'
 import {
   DropData,
   DropPosition,
@@ -6,8 +11,9 @@ import {
   TreeNode,
   TreeNodeType,
 } from '../types'
+import { recursiveTreeMap } from './tree-recursive'
 
-export default function moveNode(data: DropData): TreeNode[] {
+export function moveNode(data: DropData): TreeNode[] {
   const { tree, source, target, position, prevParent, nextParent } = data
 
   const isDroppingInsideFolder =
@@ -111,4 +117,39 @@ function handleDifferentParentMove({
 
     return node
   })
+}
+
+export function calculateDragPosition({
+  event,
+  contentRect,
+  isFolder,
+  isOpen,
+}: {
+  event: React.DragEvent
+  contentRect: Pick<DOMRect, 'height' | 'top'>
+  isFolder: boolean
+  isOpen: boolean
+}): DropPosition {
+  const { height, top } = contentRect
+  const relativeY = event.clientY - top
+
+  if (isFolder) {
+    if (relativeY < height * THRESHOLD_BEFORE_PERCENT) {
+      return DropPosition.Before
+    }
+
+    const bottomThreshold = isOpen
+      ? THRESHOLD_AFTER_OPEN_PERCENT
+      : THRESHOLD_AFTER_CLOSED_PERCENT
+
+    if (relativeY > height * bottomThreshold) {
+      return DropPosition.After
+    }
+
+    return DropPosition.Inside
+  }
+
+  return relativeY < height * THRESHOLD_MID_PERCENT
+    ? DropPosition.Before
+    : DropPosition.After
 }

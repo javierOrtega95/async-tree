@@ -11,7 +11,7 @@ import {
   TreeNode,
   TreeNodeType,
 } from './types'
-import moveNode from './utils/tree-operations'
+import { moveNode } from './utils/tree-operations'
 import {
   getFoldersMap,
   getParentMap,

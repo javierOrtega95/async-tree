@@ -1,11 +1,5 @@
 import { Children, useRef, useState } from 'react'
 import {
-  THRESHOLD_AFTER_CLOSED_PERCENT,
-  THRESHOLD_AFTER_OPEN_PERCENT,
-  THRESHOLD_BEFORE_PERCENT,
-  THRESHOLD_MID_PERCENT,
-} from '../../constants'
-import {
   DropPosition,
   FolderNode,
   FolderProps,
@@ -14,6 +8,7 @@ import {
   TreeNodeProps,
   TreeNodeType,
 } from '../../types'
+import { calculateDragPosition } from '../../utils/tree-operations'
 import { default as DefaultFolder } from '../tree-folder/TreeFolder'
 import { default as DefaultItem } from '../tree-item/TreeItem'
 import './TreeNode.css'
@@ -94,29 +89,13 @@ export default function TreeNode({
 
     if (!nodeRef.current) return
 
-    const { height, top } = nodeRef.current.getBoundingClientRect()
-    const relativeY = e.clientY - top
-
-    let position: DropPosition
-
-    if (isFolder) {
-      const bottomThreshold = isOpen
-        ? THRESHOLD_AFTER_OPEN_PERCENT
-        : THRESHOLD_AFTER_CLOSED_PERCENT
-
-      if (relativeY < height * THRESHOLD_BEFORE_PERCENT) {
-        position = DropPosition.Before
-      } else if (relativeY > height * bottomThreshold) {
-        position = DropPosition.After
-      } else {
-        position = DropPosition.Inside
-      }
-    } else {
-      position =
-        relativeY < height * THRESHOLD_MID_PERCENT
-          ? DropPosition.Before
-          : DropPosition.After
-    }
+    const contentRect = nodeRef.current.getBoundingClientRect()
+    const position = calculateDragPosition({
+      event: e,
+      contentRect,
+      isFolder,
+      isOpen,
+    })
 
     setDragPosition(position)
     onDragOver(e)
