@@ -21,8 +21,8 @@ import isValidMove from './utils/validations'
 
 export default function AsyncTree({
   initialTree,
-  CustomItem,
-  CustomFolder,
+  customItem,
+  customFolder,
   fetchOnce = true,
   loadChildren,
   onChange,
@@ -166,8 +166,8 @@ export default function AsyncTree({
           level={level}
           isOpen={isOpen}
           isLoading={isLoading}
-          CustomItem={CustomItem}
-          CustomFolder={CustomFolder}
+          customItem={customItem}
+          customFolder={customFolder}
           onFolderClick={handleFolderClick}
           onDragStart={handleDragStart}
           onDragOver={handleDragOver}

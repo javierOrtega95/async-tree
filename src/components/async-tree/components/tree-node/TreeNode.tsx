@@ -21,8 +21,8 @@ import './TreeNode.css'
 export default function TreeNode({
   node,
   level,
-  CustomItem,
-  CustomFolder,
+  customItem,
+  customFolder,
   isOpen,
   isLoading,
   children,
@@ -60,8 +60,8 @@ export default function TreeNode({
     node: node as ItemNode,
   }
 
-  const FolderComponent = CustomFolder ?? DefaultFolder
-  const ItemComponent = CustomItem ?? DefaultItem
+  const FolderComponent = customFolder ?? DefaultFolder
+  const ItemComponent = customItem ?? DefaultItem
 
   const handleDragStart = (e: React.DragEvent) => {
     e.stopPropagation()

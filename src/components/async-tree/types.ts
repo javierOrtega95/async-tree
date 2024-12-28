@@ -9,16 +9,12 @@ export enum DropPosition {
   After = 'after',
 }
 
-export type TreeNode<T = object> = {
-  id: string
-  name: string
-} & T &
-  (FolderNode | ItemNode)
-
 interface BaseNode {
   id: string
   name: string
 }
+
+export type TreeNode<T = object> = (FolderNode | ItemNode) & T
 
 export interface FolderState {
   isOpen?: boolean
@@ -26,7 +22,7 @@ export interface FolderState {
   hasFetched?: boolean
 }
 
-export interface FolderNode extends BaseNode, Omit<FolderState, 'hasFetched'> {
+export interface FolderNode extends BaseNode, FolderState {
   nodeType: TreeNodeType.Folder
   children: TreeNode[]
 }
@@ -38,14 +34,14 @@ export interface ItemNode extends BaseNode {
 export interface AsyncTreeProps {
   initialTree: TreeNode[]
   fetchOnce?: boolean
-  CustomFolder?: React.FC<FolderProps>
-  CustomItem?: React.FC<ItemProps>
+  customFolder?: React.FC<FolderProps>
+  customItem?: React.FC<ItemProps>
   loadChildren: (folder: FolderNode) => Promise<TreeNode[]>
   onChange?: (changes: DropData) => void
 }
 
 export interface TreeNodeProps
-  extends Pick<AsyncTreeProps, 'CustomFolder' | 'CustomItem'>,
+  extends Pick<AsyncTreeProps, 'customFolder' | 'customItem'>,
     Pick<FolderProps, 'isLoading' | 'isOpen'> {
   node: FolderNode | ItemNode
   level: number
