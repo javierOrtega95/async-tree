@@ -138,6 +138,7 @@ export default function TreeNode({
   return (
     <li
       id={node.id}
+      role='treeitem'
       draggable={true}
       className='tree-node'
       style={{ paddingLeft: left }}
