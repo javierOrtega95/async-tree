@@ -103,16 +103,6 @@ export default function AsyncTree({
     }
   }
 
-  const handleDragStart = (e: React.DragEvent, node: TreeNode) => {
-    e.dataTransfer.setData('application/json', JSON.stringify(node))
-    e.dataTransfer.effectAllowed = 'move'
-  }
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = 'move'
-  }
-
   const handleDrop = (
     e: React.DragEvent,
     target: TreeNode,
@@ -169,8 +159,6 @@ export default function AsyncTree({
           customItem={customItem}
           customFolder={customFolder}
           onFolderClick={handleFolderClick}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
           {isFolder && isOpen && (

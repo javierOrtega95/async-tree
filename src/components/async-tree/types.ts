@@ -47,8 +47,6 @@ export interface TreeNodeProps
   level: number
   children?: React.ReactNode
   onFolderClick: (node: FolderNode) => void
-  onDragStart: (event: React.DragEvent, node: TreeNode) => void
-  onDragOver: (event: React.DragEvent) => void
   onDrop: (
     event: React.DragEvent,
     target: TreeNode,

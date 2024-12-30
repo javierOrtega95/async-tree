@@ -22,8 +22,6 @@ export default function TreeNode({
   isLoading,
   children,
   onFolderClick,
-  onDragStart,
-  onDragOver,
   onDrop,
 }: TreeNodeProps): JSX.Element {
   const [dragPosition, setDragPosition] = useState<DropPosition | null>(null)
@@ -61,7 +59,8 @@ export default function TreeNode({
   const handleDragStart = (e: React.DragEvent) => {
     e.stopPropagation()
 
-    onDragStart(e, node)
+    e.dataTransfer.setData('application/json', JSON.stringify(node))
+    e.dataTransfer.effectAllowed = 'move'
   }
 
   const handleDragEnter = (e: React.DragEvent) => {
@@ -87,6 +86,8 @@ export default function TreeNode({
     e.preventDefault()
     e.stopPropagation()
 
+    e.dataTransfer.dropEffect = 'move'
+
     if (!nodeRef.current) return
 
     const contentRect = nodeRef.current.getBoundingClientRect()
@@ -98,7 +99,6 @@ export default function TreeNode({
     })
 
     setDragPosition(position)
-    onDragOver(e)
   }
 
   const handleDrop = (e: React.DragEvent) => {
