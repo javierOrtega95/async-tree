@@ -1,6 +1,6 @@
-import { TreeNodeType } from './types'
+import { FolderNode, TreeNodeType } from './types'
 
-export const ROOT_NODE = {
+export const ROOT_NODE: FolderNode = {
   id: 'root',
   name: 'root',
   nodeType: TreeNodeType.Folder,
