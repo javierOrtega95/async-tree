@@ -1,5 +1,5 @@
 import {
-  DropData,
+  MoveData,
   DropPosition,
   FolderNode,
   ParentMap,
@@ -14,7 +14,7 @@ export default function isValidMove({
   prevParent,
   nextParent,
   parentMap,
-}: Omit<DropData, 'tree'> & {
+}: Omit<MoveData, 'tree'> & {
   parentMap: ParentMap
 }): boolean {
   if (isAlreadyInsideFolder(source, target, position)) return false
@@ -84,7 +84,7 @@ function isSamePosition({
   target,
   position,
   prevParent,
-}: Omit<DropData, 'tree' | 'nextParent'>): boolean {
+}: Omit<MoveData, 'tree' | 'nextParent'>): boolean {
   const { children } = prevParent
 
   const sourceIndex = children.findIndex((child) => child.id === source.id)

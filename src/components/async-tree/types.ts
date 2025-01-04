@@ -33,11 +33,12 @@ export interface ItemNode extends BaseNode {
 
 export interface AsyncTreeProps {
   initialTree: TreeNode[]
+  loadChildren: (folder: FolderNode) => Promise<TreeNode[]>
   fetchOnce?: boolean
   customFolder?: React.FC<FolderProps>
   customItem?: React.FC<ItemProps>
-  loadChildren: (folder: FolderNode) => Promise<TreeNode[]>
-  onChange?: (changes: DropData) => void
+  onDrop?: (data: DropData) => void
+  onChange?: (tree: TreeNode[]) => void
 }
 
 export interface TreeNodeProps
@@ -47,10 +48,7 @@ export interface TreeNodeProps
   level: number
   children?: React.ReactNode
   onFolderClick: (node: FolderNode) => void
-  onDrop: (
-    event: React.DragEvent,
-    data: Pick<DropData, 'source' | 'target' | 'position'>
-  ) => void
+  onDrop: (event: React.DragEvent, data: TreeMovement) => void
 }
 
 export interface FolderProps {
@@ -69,13 +67,21 @@ export interface ItemProps {
 
 export type FoldersMap = Map<FolderNode['id'], FolderState>
 
-export type DropData = {
-  tree: TreeNode[]
+export type TreeMovement = {
   source: TreeNode
   target: TreeNode
   position: DropPosition
+}
+
+export type MoveData = TreeMovement & {
+  tree: TreeNode[]
   prevParent: FolderNode
   nextParent: FolderNode
+}
+
+export type DropData = TreeMovement & {
+  prevParent: FolderNode | null
+  nextParent: FolderNode | null
 }
 
 export type ParentMap = Map<TreeNode['id'], FolderNode | null>

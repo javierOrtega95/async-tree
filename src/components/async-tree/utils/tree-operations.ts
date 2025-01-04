@@ -5,7 +5,7 @@ import {
   THRESHOLD_MID_PERCENT,
 } from '../constants'
 import {
-  DropData,
+  MoveData,
   DropPosition,
   FolderNode,
   TreeNode,
@@ -13,14 +13,10 @@ import {
 } from '../types'
 import { recursiveTreeMap } from './tree-recursive'
 
-export function moveNode(data: DropData): TreeNode[] {
+export function moveNode(data: MoveData): TreeNode[] {
   const { tree, source, target, position, prevParent, nextParent } = data
 
-  const isDroppingInsideFolder =
-    target.nodeType === TreeNodeType.Folder && position === DropPosition.Inside
-
-  const isDroppedInSameParent =
-    prevParent.id === nextParent.id && !isDroppingInsideFolder
+  const isDroppedInSameParent = prevParent.id === nextParent.id
 
   return isDroppedInSameParent
     ? handleSameParentMove({ tree, source, target, position, prevParent })
@@ -33,7 +29,7 @@ function handleSameParentMove({
   target,
   position,
   prevParent,
-}: Omit<DropData, 'nextParent'>): TreeNode[] {
+}: Omit<MoveData, 'nextParent'>): TreeNode[] {
   const { id, children } = prevParent
 
   const sourceIndex = children.findIndex((child) => child.id === source.id)
@@ -75,7 +71,7 @@ function handleDifferentParentMove({
   position,
   prevParent,
   nextParent,
-}: DropData): TreeNode[] {
+}: MoveData): TreeNode[] {
   const isDroppingInsideFolder =
     target.nodeType === TreeNodeType.Folder && position === DropPosition.Inside
 

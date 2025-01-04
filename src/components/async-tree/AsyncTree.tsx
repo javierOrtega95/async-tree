@@ -4,10 +4,11 @@ import { default as TreeNodeComponent } from './components/tree-node/TreeNode'
 import { ROOT_NODE } from './constants'
 import {
   AsyncTreeProps,
-  DropData,
+  DropPosition,
   FolderNode,
   FoldersMap,
   FolderState,
+  TreeMovement,
   TreeNode,
   TreeNodeType,
 } from './types'
@@ -25,6 +26,7 @@ export default function AsyncTree({
   customFolder,
   fetchOnce = true,
   loadChildren,
+  onDrop,
   onChange,
 }: AsyncTreeProps): JSX.Element {
   const [tree, setTree] = useState<TreeNode[]>([
@@ -58,10 +60,6 @@ export default function AsyncTree({
     })
   }
 
-  const handleFolderClose = (folderId: FolderNode['id']) => {
-    updateFolderState(folderId, { isOpen: false })
-  }
-
   const updateFolderChildren = (
     tree: TreeNode[],
     folderId: TreeNode['id'],
@@ -83,7 +81,7 @@ export default function AsyncTree({
     const { id } = folder
     const { isOpen = false, hasFetched = false } = foldersMap.get(id) ?? {}
 
-    if (isOpen) return handleFolderClose(id)
+    if (isOpen) return updateFolderState(id, { isOpen: false })
 
     if (fetchOnce && hasFetched) return updateFolderState(id, { isOpen: true })
 
@@ -91,7 +89,15 @@ export default function AsyncTree({
       updateFolderState(id, { isLoading: true })
       const children = await loadChildren(folder)
 
-      setTree((prev) => updateFolderChildren(prev, id, children))
+      setTree((prev) => {
+        const newTree = updateFolderChildren(prev, id, children)
+        const rootChildren = [...(newTree[0] as FolderNode).children]
+
+        onChange?.(rootChildren)
+
+        return newTree
+      })
+
       updateFolderState(id, {
         isOpen: true,
         isLoading: false,
@@ -103,19 +109,20 @@ export default function AsyncTree({
     }
   }
 
-  const handleDrop = (
-    e: React.DragEvent,
-    data: Pick<DropData, 'source' | 'target' | 'position'>
-  ) => {
+  const handleDrop = (e: React.DragEvent, data: TreeMovement) => {
     e.preventDefault()
     e.stopPropagation()
 
     const { source, target, position } = data
 
-    if (!source || source.id === target.id) return
+    if (source.id === target.id) return
+
+    const isDroppingInside =
+      position === DropPosition.Inside &&
+      target.nodeType === TreeNodeType.Folder
 
     const prevParent = parentMap.get(source.id)
-    const nextParent = parentMap.get(target.id)
+    const nextParent = isDroppingInside ? target : parentMap.get(target.id)
 
     if (!prevParent || !nextParent) return
 
@@ -130,14 +137,19 @@ export default function AsyncTree({
     if (!isValidMove({ ...dropData, parentMap })) return
 
     /**@todo canDrop?.(dropData) */
+    onDrop?.({
+      source,
+      target,
+      position,
+      prevParent: prevParent.id === ROOT_NODE.id ? null : prevParent,
+      nextParent: nextParent.id === ROOT_NODE.id ? null : nextParent,
+    })
 
     setTree((prevTree) => {
       const newTree = moveNode({ tree: prevTree, ...dropData })
 
       const rootChildren = [...(newTree[0] as FolderNode).children]
-      const changes = { tree: rootChildren, ...dropData }
-
-      onChange?.(changes)
+      onChange?.(rootChildren)
 
       return newTree
     })
