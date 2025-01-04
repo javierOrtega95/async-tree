@@ -5,11 +5,13 @@ import {
   FolderProps,
   ItemNode,
   ItemProps,
-  TreeNode as Node,
   TreeNodeProps,
   TreeNodeType,
 } from '../../types'
-import { calculateDragPosition } from '../../utils/tree-operations'
+import {
+  calculateDragPosition,
+  parseNodeData,
+} from '../../utils/tree-operations'
 import { default as DefaultFolder } from '../tree-folder/TreeFolder'
 import { default as DefaultItem } from '../tree-item/TreeItem'
 import './TreeNode.css'
@@ -109,7 +111,7 @@ export default function TreeNode({
     dragCounter.current = 0
 
     const sourceData = e.dataTransfer.getData('application/json')
-    const source: Node = JSON.parse(sourceData)
+    const source = parseNodeData(sourceData)
 
     setDragPosition(null)
 

@@ -153,3 +153,12 @@ export function calculateDragPosition({
     ? DropPosition.Before
     : DropPosition.After
 }
+
+export function parseNodeData(data: string): TreeNode | null {
+  try {
+    return JSON.parse(data)
+  } catch (error) {
+    console.error('Invalid JSON data:', error)
+    return null
+  }
+}
