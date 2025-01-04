@@ -49,8 +49,7 @@ export interface TreeNodeProps
   onFolderClick: (node: FolderNode) => void
   onDrop: (
     event: React.DragEvent,
-    target: TreeNode,
-    position: DropPosition
+    data: Pick<DropData, 'source' | 'target' | 'position'>
   ) => void
 }
 

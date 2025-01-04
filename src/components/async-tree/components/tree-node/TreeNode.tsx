@@ -5,6 +5,7 @@ import {
   FolderProps,
   ItemNode,
   ItemProps,
+  TreeNode as Node,
   TreeNodeProps,
   TreeNodeType,
 } from '../../types'
@@ -59,8 +60,8 @@ export default function TreeNode({
   const handleDragStart = (e: React.DragEvent) => {
     e.stopPropagation()
 
-    e.dataTransfer.setData('application/json', JSON.stringify(node))
     e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('application/json', JSON.stringify(node))
   }
 
   const handleDragEnter = (e: React.DragEvent) => {
@@ -107,16 +108,25 @@ export default function TreeNode({
 
     dragCounter.current = 0
 
-    if (dragPosition) {
-      onDrop(e, node, dragPosition)
-    }
+    const sourceData = e.dataTransfer.getData('application/json')
+    const source: Node = JSON.parse(sourceData)
 
     setDragPosition(null)
+
+    if (!dragPosition || !source) return
+
+    const dropData = {
+      source,
+      target: node,
+      position: dragPosition,
+    }
+
+    onDrop(e, dropData)
   }
 
   return (
     <li
-      id={node.id}
+      id={`tree-node-${node.id}`}
       role='treeitem'
       draggable={true}
       className='tree-node'

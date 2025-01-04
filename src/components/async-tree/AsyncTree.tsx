@@ -4,7 +4,7 @@ import { default as TreeNodeComponent } from './components/tree-node/TreeNode'
 import { ROOT_NODE } from './constants'
 import {
   AsyncTreeProps,
-  DropPosition,
+  DropData,
   FolderNode,
   FoldersMap,
   FolderState,
@@ -105,14 +105,12 @@ export default function AsyncTree({
 
   const handleDrop = (
     e: React.DragEvent,
-    target: TreeNode,
-    position: DropPosition
+    data: Pick<DropData, 'source' | 'target' | 'position'>
   ) => {
     e.preventDefault()
     e.stopPropagation()
 
-    const sourceData = e.dataTransfer.getData('application/json')
-    const source: TreeNode = JSON.parse(sourceData)
+    const { source, target, position } = data
 
     if (!source || source.id === target.id) return
 
