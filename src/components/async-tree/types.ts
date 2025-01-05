@@ -42,8 +42,7 @@ export interface AsyncTreeProps {
 }
 
 export interface TreeNodeProps
-  extends Pick<AsyncTreeProps, 'customFolder' | 'customItem'>,
-    Pick<FolderProps, 'isLoading' | 'isOpen'> {
+  extends Pick<AsyncTreeProps, 'customFolder' | 'customItem'> {
   node: FolderNode | ItemNode
   level: number
   children?: React.ReactNode
@@ -54,8 +53,6 @@ export interface TreeNodeProps
 export interface FolderProps {
   node: FolderNode
   level: number
-  isOpen: boolean
-  isLoading: boolean
   childrenCount: number
   onClick: (folder: FolderNode) => void
 }
@@ -85,10 +82,3 @@ export type DropData = TreeMovement & {
 }
 
 export type ParentMap = Map<TreeNode['id'], FolderNode | null>
-
-export interface UseTreeNodeDragAndDropProps {
-  node: TreeNode
-  isFolder: boolean
-  isOpen: boolean
-  onDrop: (e: React.DragEvent, data: TreeMovement) => void
-}

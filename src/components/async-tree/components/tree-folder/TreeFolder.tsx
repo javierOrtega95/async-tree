@@ -3,10 +3,10 @@ import './TreeFolder.css'
 
 export default function TreeFolder({
   node,
-  isOpen,
-  isLoading,
   onClick,
 }: FolderProps): JSX.Element {
+  const { isLoading = false, isOpen = false } = node
+
   return (
     <div
       id={node.id}

@@ -17,8 +17,6 @@ describe('TreeFolder', () => {
     render(
       <TreeFolder
         node={mockNode}
-        isOpen={false}
-        isLoading={false}
         level={0}
         childrenCount={0}
         onClick={mockOnClick}
@@ -41,9 +39,7 @@ describe('TreeFolder', () => {
   it('displays a loading icon when isLoading is true', () => {
     render(
       <TreeFolder
-        node={mockNode}
-        isOpen={false}
-        isLoading={true}
+        node={{ ...mockNode, isOpen: false, isLoading: true }}
         level={0}
         childrenCount={0}
         onClick={mockOnClick}
@@ -58,9 +54,7 @@ describe('TreeFolder', () => {
   it('displays an open chevron icon when isOpen is true', () => {
     render(
       <TreeFolder
-        node={mockNode}
-        isOpen={true}
-        isLoading={false}
+        node={{ ...mockNode, isOpen: true }}
         level={0}
         childrenCount={0}
         onClick={mockOnClick}
@@ -76,8 +70,6 @@ describe('TreeFolder', () => {
     render(
       <TreeFolder
         node={mockNode}
-        isOpen={false}
-        isLoading={false}
         level={0}
         childrenCount={0}
         onClick={mockOnClick}

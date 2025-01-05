@@ -19,8 +19,6 @@ export default function TreeNode({
   level,
   customItem,
   customFolder,
-  isOpen,
-  isLoading,
   children,
   onFolderClick,
   onDrop,
@@ -36,12 +34,7 @@ export default function TreeNode({
     handleDragLeave,
     handleDragOver,
     handleDrop,
-  } = useTreeNodeDragAndDrop({
-    node,
-    isFolder,
-    isOpen,
-    onDrop,
-  })
+  } = useTreeNodeDragAndDrop(node, onDrop)
 
   const isDroppingInside = dragPosition === DropPosition.Inside
   const isDroppingBefore = dragPosition === DropPosition.Before
@@ -54,8 +47,6 @@ export default function TreeNode({
   const folderProps: FolderProps = {
     level,
     node: node as FolderNode,
-    isOpen,
-    isLoading,
     childrenCount: Children.count(children),
     onClick: onFolderClick,
   }
@@ -71,6 +62,7 @@ export default function TreeNode({
   return (
     <li
       id={`tree-node-${node.id}`}
+      data-testid={`tree-node-${node.id}`}
       role='treeitem'
       draggable={true}
       className='tree-node'
@@ -83,7 +75,11 @@ export default function TreeNode({
     >
       {isDroppingBefore && <span className='drop-indicator' style={{ left }} />}
 
-      <div ref={nodeRef} className={`node-content ${dropOverClassName}`}>
+      <div
+        data-testid={`node-content-${node.id}`}
+        ref={nodeRef}
+        className={`node-content ${dropOverClassName}`}
+      >
         {isFolder && <FolderComponent {...folderProps} />}
 
         {isItem && <ItemComponent {...itemsProps} />}

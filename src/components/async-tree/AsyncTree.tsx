@@ -18,7 +18,7 @@ import {
   getParentMap,
   recursiveTreeMap,
 } from './utils/tree-recursive'
-import { isValidMove } from './utils/validations'
+import { isFolderNode, isValidMove } from './utils/validations'
 
 export default function AsyncTree({
   initialTree,
@@ -46,10 +46,10 @@ export default function AsyncTree({
 
   const updateFolderState = (
     folderId: FolderNode['id'],
-    folderState: FolderState
+    folderState: Partial<FolderState>
   ) => {
     setFoldersMap((prevState) => {
-      const prevFolderState = prevState.get(folderId)
+      const prevFolderState = prevState.get(folderId) as FolderState
 
       const newFolderState = {
         ...prevFolderState,
@@ -157,15 +157,14 @@ export default function AsyncTree({
 
   const renderNode = (node: TreeNode, level: number = 0) => {
     const { isOpen = false, isLoading = false } = foldersMap.get(node.id) ?? {}
-    const isFolder = node.nodeType === TreeNodeType.Folder
+    const isFolder = isFolderNode(node)
+    const nodeData = isFolder ? { ...node, isOpen, isLoading } : node
 
     return (
       <React.Fragment key={node.id}>
         <TreeNodeComponent
-          node={node}
+          node={nodeData}
           level={level}
-          isOpen={isOpen}
-          isLoading={isLoading}
           customItem={customItem}
           customFolder={customFolder}
           onFolderClick={handleFolderClick}

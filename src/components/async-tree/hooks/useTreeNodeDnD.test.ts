@@ -1,9 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import {
-  DropPosition,
-  TreeNodeType,
-  UseTreeNodeDragAndDropProps,
-} from '../types'
+import { DropPosition, TreeNodeType } from '../types'
 import { act, renderHook } from '@testing-library/react'
 import useTreeNodeDnD from './useTreeNodeDnD'
 
@@ -17,25 +13,18 @@ describe('useTreeNodeDnD', () => {
     children: [],
   }
 
-  const defaultProps: UseTreeNodeDragAndDropProps = {
-    node: nodeMock,
-    isFolder: true,
-    isOpen: false,
-    onDrop: mockOnDrop,
-  }
-
   afterEach(() => {
     vi.restoreAllMocks()
   })
 
   it('should initialize with null drag position', () => {
-    const { result } = renderHook(() => useTreeNodeDnD(defaultProps))
+    const { result } = renderHook(() => useTreeNodeDnD(nodeMock, mockOnDrop))
 
     expect(result.current.dragPosition).toBeNull()
   })
 
   it('should handle drag start correctly', () => {
-    const { result } = renderHook(() => useTreeNodeDnD(defaultProps))
+    const { result } = renderHook(() => useTreeNodeDnD(nodeMock, mockOnDrop))
 
     const dragEvent = {
       stopPropagation: vi.fn(),
@@ -55,7 +44,7 @@ describe('useTreeNodeDnD', () => {
   })
 
   it('should increment dragCounter on drag enter', () => {
-    const { result } = renderHook(() => useTreeNodeDnD(defaultProps))
+    const { result } = renderHook(() => useTreeNodeDnD(nodeMock, mockOnDrop))
 
     const dragEvent = {
       stopPropagation: vi.fn(),
@@ -72,7 +61,7 @@ describe('useTreeNodeDnD', () => {
   })
 
   it('should decrement dragCounter and reset dragPosition on drag leave', () => {
-    const { result } = renderHook(() => useTreeNodeDnD(defaultProps))
+    const { result } = renderHook(() => useTreeNodeDnD(nodeMock, mockOnDrop))
     const dragEvent = {
       stopPropagation: vi.fn(),
       preventDefault: vi.fn(),
@@ -94,7 +83,7 @@ describe('useTreeNodeDnD', () => {
   })
 
   it('should set dragPosition on drag over', () => {
-    const { result } = renderHook(() => useTreeNodeDnD(defaultProps))
+    const { result } = renderHook(() => useTreeNodeDnD(nodeMock, mockOnDrop))
 
     const dragEvent = {
       preventDefault: vi.fn(),
@@ -137,9 +126,7 @@ describe('useTreeNodeDnD', () => {
       children: [],
     }
 
-    const { result } = renderHook(() =>
-      useTreeNodeDnD({ ...defaultProps, node: targetMock })
-    )
+    const { result } = renderHook(() => useTreeNodeDnD(targetMock, mockOnDrop))
 
     const dragEvent = {
       stopPropagation: vi.fn(),
