@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { DropPosition, UseTreeNodeDragAndDropProps } from '../types'
 import { calculateDragPosition, parseNodeData } from '../utils/tree-operations'
 
-export default function useTreeNodeDragAndDrop({
+export default function useTreeNodeDnD({
   node,
   isFolder,
   isOpen,
