@@ -1,34 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { getParentMap } from './tree-recursive'
-import { DropPosition, FolderNode, TreeNode, TreeNodeType } from '../types'
-import isValidMove from './validations'
+import { mockTree } from '../../../mocks/test-mocks'
 import { ROOT_NODE } from '../constants'
-
-const mockTree: TreeNode[] = [
-  {
-    ...ROOT_NODE,
-    children: [
-      {
-        id: crypto.randomUUID(),
-        name: 'Folder 1',
-        nodeType: TreeNodeType.Folder,
-        children: [
-          {
-            id: crypto.randomUUID(),
-            name: 'Folder 2',
-            nodeType: TreeNodeType.Folder,
-            children: [],
-          },
-          {
-            id: crypto.randomUUID(),
-            name: 'Item 1',
-            nodeType: TreeNodeType.Item,
-          },
-        ],
-      },
-    ],
-  },
-]
+import { DropPosition, FolderNode } from '../types'
+import { getParentMap } from './tree-recursive'
+import isValidMove from './validations'
 
 const mockParentMap = getParentMap(mockTree)
 

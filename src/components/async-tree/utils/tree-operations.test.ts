@@ -1,42 +1,17 @@
 import { afterAll, describe, expect, it, vi } from 'vitest'
-import { DropPosition, FolderNode, TreeNode, TreeNodeType } from '../types'
 import {
-  ROOT_NODE,
-  THRESHOLD_BEFORE_PERCENT,
-  THRESHOLD_MID_PERCENT,
-} from '../constants'
+  firstChild,
+  mockTree,
+  parentNode,
+  secondChild,
+} from '../../../mocks/test-mocks'
+import { THRESHOLD_BEFORE_PERCENT, THRESHOLD_MID_PERCENT } from '../constants'
+import { DropPosition, FolderNode } from '../types'
 import {
   calculateDragPosition,
   moveNode,
   parseNodeData,
 } from './tree-operations'
-
-const firstChild: FolderNode = {
-  id: crypto.randomUUID(),
-  name: 'Folder 2',
-  nodeType: TreeNodeType.Folder,
-  children: [],
-}
-
-const secondChild: TreeNode = {
-  id: crypto.randomUUID(),
-  name: 'Item 1',
-  nodeType: TreeNodeType.Item,
-}
-
-const parentNode: FolderNode = {
-  id: crypto.randomUUID(),
-  name: 'Folder 1',
-  nodeType: TreeNodeType.Folder,
-  children: [firstChild, secondChild],
-}
-
-const mockTree: TreeNode[] = [
-  {
-    ...ROOT_NODE,
-    children: [parentNode],
-  },
-]
 
 describe('tree-operations utilities', () => {
   describe('moveNode', () => {
@@ -286,7 +261,7 @@ describe('tree-operations utilities', () => {
     })
 
     it('should parse valid JSON string and return TreeNode', () => {
-      const validData = '{"id": 1, "name": "Node 1"}' // Valid JSON string
+      const validData = '{"id": 1, "name": "Node 1"}'
       const result = parseNodeData(validData)
 
       expect(result).toEqual({
@@ -296,21 +271,21 @@ describe('tree-operations utilities', () => {
     })
 
     it('should return null for invalid JSON string', () => {
-      const invalidData = '{"id": 1, "name": "Node 1"' // Malformed JSON string
+      const invalidData = '{"id": 1, "name": "Node 1"'
       const result = parseNodeData(invalidData)
 
       expect(result).toBeNull()
     })
 
     it('should return null for an empty string', () => {
-      const emptyData = '' // Empty string, should return null
+      const emptyData = ''
       const result = parseNodeData(emptyData)
 
       expect(result).toBeNull()
     })
 
     it('should return null for a non-JSON string', () => {
-      const nonJsonData = 'Hello, world!' // Not a valid JSON string
+      const nonJsonData = 'Hello, world!'
       const result = parseNodeData(nonJsonData)
 
       expect(result).toBeNull()
