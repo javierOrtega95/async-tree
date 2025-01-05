@@ -1,4 +1,5 @@
-import { Children, useRef, useState } from 'react'
+import { Children } from 'react'
+import useTreeNodeDragAndDrop from '../../hooks/useTreeNodeDragAndDrop'
 import {
   DropPosition,
   FolderNode,
@@ -6,15 +7,12 @@ import {
   ItemNode,
   ItemProps,
   TreeNodeProps,
-  TreeNodeType,
 } from '../../types'
-import {
-  calculateDragPosition,
-  parseNodeData,
-} from '../../utils/tree-operations'
+import { isFolderNode, isItemNode } from '../../utils/validations'
 import { default as DefaultFolder } from '../tree-folder/TreeFolder'
 import { default as DefaultItem } from '../tree-item/TreeItem'
 import './TreeNode.css'
+import { TREE_NODE_INDENTATION } from '../../constants'
 
 export default function TreeNode({
   node,
@@ -49,7 +47,7 @@ export default function TreeNode({
   const isDroppingBefore = dragPosition === DropPosition.Before
   const isDroppingAfter = dragPosition === DropPosition.After
 
-  const left = 12 * level
+  const left = TREE_NODE_INDENTATION * level
 
   const dropOverClassName = isDroppingInside ? 'drop-target drag-over' : ''
 

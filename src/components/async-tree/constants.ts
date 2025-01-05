@@ -7,6 +7,8 @@ export const ROOT_NODE: FolderNode = {
   children: [],
 }
 
+export const TREE_NODE_INDENTATION = 12
+
 export const THRESHOLD_BEFORE_PERCENT = 0.25
 export const THRESHOLD_MID_PERCENT = 0.5
 export const THRESHOLD_AFTER_CLOSED_PERCENT = 0.75
