@@ -16,15 +16,11 @@ interface BaseNode {
 
 export type TreeNode<T = object> = (FolderNode | ItemNode) & T
 
-export interface FolderState {
-  isOpen?: boolean
-  isLoading?: boolean
-  hasFetched?: boolean
-}
-
-export interface FolderNode extends BaseNode, FolderState {
+export interface FolderNode extends BaseNode {
   nodeType: TreeNodeType.Folder
   children: TreeNode[]
+  isOpen?: boolean
+  isLoading?: boolean
 }
 
 export interface ItemNode extends BaseNode {
@@ -60,6 +56,10 @@ export interface FolderProps {
 export interface ItemProps {
   node: ItemNode
   level: number
+}
+
+export type FolderState = Pick<FolderNode, 'isOpen' | 'isLoading'> & {
+  hasFetched?: boolean
 }
 
 export type FoldersMap = Map<FolderNode['id'], FolderState>
