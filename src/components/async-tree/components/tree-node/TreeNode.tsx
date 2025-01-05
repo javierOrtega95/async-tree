@@ -27,12 +27,23 @@ export default function TreeNode({
   onFolderClick,
   onDrop,
 }: TreeNodeProps): JSX.Element {
-  const [dragPosition, setDragPosition] = useState<DropPosition | null>(null)
-  const nodeRef = useRef<HTMLDivElement>(null)
-  const dragCounter = useRef<number>(0)
+  const isFolder = isFolderNode(node)
+  const isItem = isItemNode(node)
 
-  const isFolder = node.nodeType === TreeNodeType.Folder
-  const isItem = node.nodeType === TreeNodeType.Item
+  const {
+    dragPosition,
+    nodeRef,
+    handleDragStart,
+    handleDragEnter,
+    handleDragLeave,
+    handleDragOver,
+    handleDrop,
+  } = useTreeNodeDragAndDrop({
+    node,
+    isFolder,
+    isOpen,
+    onDrop,
+  })
 
   const isDroppingInside = dragPosition === DropPosition.Inside
   const isDroppingBefore = dragPosition === DropPosition.Before
@@ -58,73 +69,6 @@ export default function TreeNode({
 
   const FolderComponent = customFolder ?? DefaultFolder
   const ItemComponent = customItem ?? DefaultItem
-
-  const handleDragStart = (e: React.DragEvent) => {
-    e.stopPropagation()
-
-    e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData('application/json', JSON.stringify(node))
-  }
-
-  const handleDragEnter = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    dragCounter.current++
-  }
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.stopPropagation()
-    e.preventDefault()
-
-    dragCounter.current--
-
-    if (dragCounter.current <= 0) {
-      dragCounter.current = 0
-      setDragPosition(null)
-    }
-  }
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    e.dataTransfer.dropEffect = 'move'
-
-    if (!nodeRef.current) return
-
-    const contentRect = nodeRef.current.getBoundingClientRect()
-    const position = calculateDragPosition({
-      event: e,
-      contentRect,
-      isFolder,
-      isOpen,
-    })
-
-    setDragPosition(position)
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    dragCounter.current = 0
-
-    const sourceData = e.dataTransfer.getData('application/json')
-    const source = parseNodeData(sourceData)
-
-    setDragPosition(null)
-
-    if (!dragPosition || !source) return
-
-    const dropData = {
-      source,
-      target: node,
-      position: dragPosition,
-    }
-
-    onDrop(e, dropData)
-  }
 
   return (
     <li

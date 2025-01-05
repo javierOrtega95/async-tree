@@ -85,3 +85,10 @@ export type DropData = TreeMovement & {
 }
 
 export type ParentMap = Map<TreeNode['id'], FolderNode | null>
+
+export interface UseTreeNodeDragAndDropProps {
+  node: TreeNode
+  isFolder: boolean
+  isOpen: boolean
+  onDrop: (e: React.DragEvent, data: TreeMovement) => void
+}
