@@ -10,7 +10,6 @@ import {
   FolderState,
   TreeMovement,
   TreeNode,
-  TreeNodeType,
 } from './types'
 import { moveNode } from './utils/tree-operations'
 import {
@@ -66,11 +65,8 @@ export default function AsyncTree({
     updatedChildren: TreeNode[]
   ) => {
     return recursiveTreeMap(tree, (node) => {
-      if (node.id === folderId && node.nodeType === TreeNodeType.Folder) {
-        return {
-          ...node,
-          children: updatedChildren,
-        }
+      if (node.id === folderId && isFolderNode(node)) {
+        return { ...node, children: updatedChildren }
       }
 
       return node
@@ -118,8 +114,7 @@ export default function AsyncTree({
     if (source.id === target.id) return
 
     const isDroppingInside =
-      position === DropPosition.Inside &&
-      target.nodeType === TreeNodeType.Folder
+      position === DropPosition.Inside && isFolderNode(target)
 
     const prevParent = parentMap.get(source.id)
     const nextParent = isDroppingInside ? target : parentMap.get(target.id)
@@ -157,7 +152,6 @@ export default function AsyncTree({
 
   const renderNode = (node: TreeNode, level: number = 0) => {
     const { isOpen = false, isLoading = false } = foldersMap.get(node.id) ?? {}
-    const isFolder = isFolderNode(node)
 
     return (
       <React.Fragment key={node.id}>
@@ -171,7 +165,7 @@ export default function AsyncTree({
           onFolderClick={handleFolderClick}
           onDrop={handleDrop}
         >
-          {isFolder && isOpen && (
+          {isFolderNode(node) && isOpen && (
             <ul role='group' className='tree-group'>
               {node.children.map((child) => renderNode(child, level + 1))}
             </ul>
