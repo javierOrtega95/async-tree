@@ -1,19 +1,18 @@
-import { FolderProps } from '../../types'
+import { FolderNode, FolderProps } from '../../types'
 import './TreeFolder.css'
 
 export default function TreeFolder({
   node,
+  isOpen = false,
   isLoading = false,
   onClick,
 }: FolderProps): JSX.Element {
-  const { isOpen = false } = node
-
   return (
     <div
       id={node.id}
       data-testid={node.id}
       className='tree-folder'
-      onClick={() => onClick(node)}
+      onClick={() => onClick(node as FolderNode)}
     >
       <svg
         data-testid={`${node.id}-${

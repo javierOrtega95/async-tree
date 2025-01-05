@@ -49,7 +49,7 @@ export default function AsyncTree({
     folderState: Partial<FolderState>
   ) => {
     setFoldersMap((prevState) => {
-      const prevFolderState = prevState.get(folderId) as FolderState
+      const prevFolderState = prevState.get(folderId)
 
       const newFolderState = {
         ...prevFolderState,
@@ -158,13 +158,13 @@ export default function AsyncTree({
   const renderNode = (node: TreeNode, level: number = 0) => {
     const { isOpen = false, isLoading = false } = foldersMap.get(node.id) ?? {}
     const isFolder = isFolderNode(node)
-    const nodeData = isFolder ? { ...node, isOpen } : node
 
     return (
       <React.Fragment key={node.id}>
         <TreeNodeComponent
-          node={nodeData}
+          node={node}
           level={level}
+          isOpen={isOpen}
           isLoading={isLoading}
           customItem={customItem}
           customFolder={customFolder}

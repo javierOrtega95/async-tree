@@ -4,7 +4,7 @@ import { calculateDragPosition, parseNodeData } from '../utils/tree-operations'
 import { isFolderNode } from '../utils/validations'
 
 export default function useTreeNodeDnD(
-  node: TreeNode,
+  node: TreeNode<{ isOpen?: boolean }>,
   onDrop: TreeNodeProps['onDrop']
 ) {
   const [dragPosition, setDragPosition] = useState<DropPosition | null>(null)
@@ -48,13 +48,12 @@ export default function useTreeNodeDnD(
     const contentRect = nodeRef.current.getBoundingClientRect()
 
     const isFolder = isFolderNode(node)
-    const isOpen = isFolder ? node?.isOpen : false
 
     const position = calculateDragPosition({
       event: e,
       contentRect,
       isFolder,
-      isOpen: isOpen ?? false,
+      isOpen: node.isOpen ?? false,
     })
 
     setDragPosition(position)

@@ -15,6 +15,7 @@ import './TreeNode.css'
 export default function TreeNode({
   node,
   level,
+  isOpen,
   isLoading,
   customItem,
   customFolder,
@@ -33,7 +34,7 @@ export default function TreeNode({
     handleDragLeave,
     handleDragOver,
     handleDrop,
-  } = useTreeNodeDragAndDrop(node, onDrop)
+  } = useTreeNodeDragAndDrop({ ...node, isOpen }, onDrop)
 
   const isDroppingInside = dragPosition === DropPosition.Inside
   const isDroppingBefore = dragPosition === DropPosition.Before
@@ -46,6 +47,7 @@ export default function TreeNode({
   const folderProps: FolderProps = {
     level,
     node,
+    isOpen,
     isLoading,
     childrenCount: Children.count(children),
     onClick: onFolderClick,

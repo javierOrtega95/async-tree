@@ -19,7 +19,6 @@ export type TreeNode<T = object> = (FolderNode | ItemNode) & T
 export interface FolderNode extends BaseNode {
   nodeType: TreeNodeType.Folder
   children: TreeNode[]
-  isOpen?: boolean
 }
 
 export interface ItemNode extends BaseNode {
@@ -29,7 +28,8 @@ export interface ItemNode extends BaseNode {
 export type FoldersMap = Map<FolderNode['id'], FolderState>
 export type ParentMap = Map<TreeNode['id'], FolderNode | null>
 
-export type FolderState = Pick<FolderNode, 'isOpen'> & {
+export type FolderState = {
+  isOpen?: boolean
   isLoading?: boolean
   hasFetched?: boolean
 }
@@ -48,6 +48,7 @@ export interface TreeNodeProps
   extends Pick<AsyncTreeProps, 'customFolder' | 'customItem'> {
   node: TreeNode
   level: number
+  isOpen: boolean
   isLoading: boolean
   children?: React.ReactNode
   onFolderClick: (node: FolderNode) => void
@@ -58,6 +59,7 @@ export interface FolderProps {
   node: TreeNode
   level: number
   childrenCount: number
+  isOpen: boolean
   isLoading: boolean
   onClick: (folder: FolderNode) => void
 }
