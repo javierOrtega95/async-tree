@@ -1,17 +1,23 @@
 import { describe, expect, it } from 'vitest'
 import { mockTree } from '../../../mocks/test-mocks'
 import { ROOT_NODE } from '../constants'
-import { DropPosition, FolderNode } from '../types'
+import {
+  DropPosition,
+  FolderNode,
+  ItemNode,
+  TreeNode,
+  TreeNodeType,
+} from '../types'
 import { getParentMap } from './tree-recursive'
-import isValidMove from './validations'
-
-const mockParentMap = getParentMap(mockTree)
-
-const { children } = mockTree[0] as FolderNode
-const [rootNode] = children
-const [firstChild, secondChild] = (rootNode as FolderNode).children
+import { isFolderNode, isItemNode, isValidMove } from './validations'
 
 describe('isValidMove', () => {
+  const mockParentMap = getParentMap(mockTree)
+
+  const { children } = mockTree[0] as FolderNode
+  const [rootNode] = children
+  const [firstChild, secondChild] = (rootNode as FolderNode).children
+
   it('should return false if source node is already inside target folder', () => {
     const target = rootNode as FolderNode
 
@@ -70,5 +76,54 @@ describe('isValidMove', () => {
     })
 
     expect(result).toBe(true)
+  })
+})
+
+describe('TreeNode type', () => {
+  const mockFolderNode: FolderNode = {
+    id: 'folder-1',
+    name: 'Folder 1',
+    nodeType: TreeNodeType.Folder,
+    children: [],
+  }
+
+  const mockItemNode: ItemNode = {
+    id: 'item-1',
+    name: 'Item 1',
+    nodeType: TreeNodeType.Item,
+  }
+
+  const mockUnknownNode: TreeNode = {
+    id: 'unknown-1',
+    name: 'Unknown Node',
+    nodeType: 'unknown' as TreeNodeType.Item,
+  }
+
+  describe('isFolderNode', () => {
+    it('should return true for a folder node', () => {
+      expect(isFolderNode(mockFolderNode)).toBe(true)
+    })
+
+    it('should return false for an item node', () => {
+      expect(isFolderNode(mockItemNode)).toBe(false)
+    })
+
+    it('should return false for an unknown node', () => {
+      expect(isFolderNode(mockUnknownNode)).toBe(false)
+    })
+  })
+
+  describe('isItemNode', () => {
+    it('should return true for an item node', () => {
+      expect(isItemNode(mockItemNode)).toBe(true)
+    })
+
+    it('should return false for a folder node', () => {
+      expect(isItemNode(mockFolderNode)).toBe(false)
+    })
+
+    it('should return false for an unknown node', () => {
+      expect(isItemNode(mockUnknownNode)).toBe(false)
+    })
   })
 })

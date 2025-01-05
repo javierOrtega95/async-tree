@@ -18,7 +18,7 @@ import {
   getParentMap,
   recursiveTreeMap,
 } from './utils/tree-recursive'
-import isValidMove from './utils/validations'
+import { isValidMove } from './utils/validations'
 
 export default function AsyncTree({
   initialTree,

@@ -1,13 +1,14 @@
 import {
-  MoveData,
   DropPosition,
   FolderNode,
+  ItemNode,
+  MoveData,
   ParentMap,
   TreeNode,
   TreeNodeType,
 } from '../types'
 
-export default function isValidMove({
+export function isValidMove({
   source,
   target,
   position,
@@ -101,4 +102,12 @@ function isSamePosition({
   if (sourceIndex === newPosition) return true
 
   return false
+}
+
+export function isFolderNode(node: TreeNode): node is FolderNode {
+  return node.nodeType === TreeNodeType.Folder
+}
+
+export function isItemNode(node: TreeNode): node is ItemNode {
+  return node.nodeType === TreeNodeType.Item
 }
