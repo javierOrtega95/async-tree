@@ -66,8 +66,6 @@ export default function useTreeNodeDnD({
     const sourceData = e.dataTransfer.getData('application/json')
     const source = parseNodeData(sourceData)
 
-    setDragPosition(null)
-
     if (!dragPosition || !source) return
 
     const dropData = {
@@ -77,6 +75,7 @@ export default function useTreeNodeDnD({
     }
 
     onDrop(e, dropData)
+    setDragPosition(null)
   }
 
   return {
