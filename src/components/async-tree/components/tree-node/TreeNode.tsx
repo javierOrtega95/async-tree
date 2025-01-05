@@ -1,10 +1,9 @@
 import { Children } from 'react'
+import { TREE_NODE_INDENTATION } from '../../constants'
 import useTreeNodeDragAndDrop from '../../hooks/useTreeNodeDnD'
 import {
   DropPosition,
-  FolderNode,
   FolderProps,
-  ItemNode,
   ItemProps,
   TreeNodeProps,
 } from '../../types'
@@ -12,11 +11,11 @@ import { isFolderNode, isItemNode } from '../../utils/validations'
 import { default as DefaultFolder } from '../tree-folder/TreeFolder'
 import { default as DefaultItem } from '../tree-item/TreeItem'
 import './TreeNode.css'
-import { TREE_NODE_INDENTATION } from '../../constants'
 
 export default function TreeNode({
   node,
   level,
+  isLoading,
   customItem,
   customFolder,
   children,
@@ -46,14 +45,15 @@ export default function TreeNode({
 
   const folderProps: FolderProps = {
     level,
-    node: node as FolderNode,
+    node,
+    isLoading,
     childrenCount: Children.count(children),
     onClick: onFolderClick,
   }
 
   const itemsProps: ItemProps = {
     level,
-    node: node as ItemNode,
+    node,
   }
 
   const FolderComponent = customFolder ?? DefaultFolder

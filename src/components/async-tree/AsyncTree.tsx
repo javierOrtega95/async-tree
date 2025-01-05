@@ -158,13 +158,14 @@ export default function AsyncTree({
   const renderNode = (node: TreeNode, level: number = 0) => {
     const { isOpen = false, isLoading = false } = foldersMap.get(node.id) ?? {}
     const isFolder = isFolderNode(node)
-    const nodeData = isFolder ? { ...node, isOpen, isLoading } : node
+    const nodeData = isFolder ? { ...node, isOpen } : node
 
     return (
       <React.Fragment key={node.id}>
         <TreeNodeComponent
           node={nodeData}
           level={level}
+          isLoading={isLoading}
           customItem={customItem}
           customFolder={customFolder}
           onFolderClick={handleFolderClick}
