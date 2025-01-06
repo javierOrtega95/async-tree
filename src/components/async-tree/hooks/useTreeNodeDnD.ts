@@ -2,11 +2,12 @@ import { useRef, useState } from 'react'
 import { DropPosition, TreeNode, TreeNodeProps } from '../types'
 import { calculateDragPosition, parseNodeData } from '../utils/tree-operations'
 import { isFolderNode } from '../utils/validations'
+import { TreeNodeDnDdata } from './types'
 
 export default function useTreeNodeDnD(
   node: TreeNode<{ isOpen?: boolean }>,
   onDrop: TreeNodeProps['onDrop']
-) {
+): TreeNodeDnDdata {
   const [dragPosition, setDragPosition] = useState<DropPosition | null>(null)
   const nodeRef = useRef<HTMLDivElement>(null)
   const dragCounter = useRef<number>(0)
