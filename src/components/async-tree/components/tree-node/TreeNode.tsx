@@ -23,9 +23,6 @@ export default function TreeNode({
   onFolderClick,
   onDrop,
 }: TreeNodeProps): JSX.Element {
-  const isFolder = isFolderNode(node)
-  const isItem = isItemNode(node)
-
   const {
     dragPosition,
     nodeRef,
@@ -36,13 +33,16 @@ export default function TreeNode({
     handleDrop,
   } = useTreeNodeDragAndDrop({ ...node, isOpen }, onDrop)
 
+  const isFolder = isFolderNode(node)
+  const isItem = isItemNode(node)
+
   const isDroppingInside = dragPosition === DropPosition.Inside
   const isDroppingBefore = dragPosition === DropPosition.Before
   const isDroppingAfter = dragPosition === DropPosition.After
 
   const left = TREE_NODE_INDENTATION * level
 
-  const dropOverClassName = isDroppingInside ? 'drop-target drag-over' : ''
+  const dropOverClassName = isDroppingInside ? 'drag-over' : ''
 
   const folderProps: FolderProps = {
     level,
@@ -67,7 +67,7 @@ export default function TreeNode({
       data-testid={`tree-node-${node.id}`}
       role='treeitem'
       draggable={true}
-      className='tree-node'
+      className={`tree-node ${dropOverClassName}`}
       style={{ paddingLeft: left }}
       onDragStart={handleDragStart}
       onDragEnter={handleDragEnter}
@@ -77,11 +77,7 @@ export default function TreeNode({
     >
       {isDroppingBefore && <span className='drop-indicator' style={{ left }} />}
 
-      <div
-        data-testid={`node-content-${node.id}`}
-        ref={nodeRef}
-        className={`node-content ${dropOverClassName}`}
-      >
+      <div data-testid={`node-content-${node.id}`} ref={nodeRef}>
         {isFolder && <FolderComponent {...folderProps} />}
 
         {isItem && <ItemComponent {...itemsProps} />}

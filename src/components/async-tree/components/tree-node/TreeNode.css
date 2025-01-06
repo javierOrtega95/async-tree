@@ -6,23 +6,6 @@
   outline: 0;
 }
 
-.node-content {
-  position: relative;
-  user-select: none;
-}
-
-/* Drag and drop styles */
-.drop-target {
-  position: relative;
-}
-
-.drop-target.drag-over::after {
-  position: absolute;
-  content: '';
-  inset: 0;
-  pointer-events: none;
-}
-
 .drop-indicator {
   position: absolute;
   height: 2px;

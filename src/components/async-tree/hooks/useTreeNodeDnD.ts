@@ -69,7 +69,7 @@ export default function useTreeNodeDnD(
     const sourceData = e.dataTransfer.getData('application/json')
     const source = parseNodeData(sourceData)
 
-    if (!dragPosition || !source) return
+    if (!dragPosition || !source) return setDragPosition(null)
 
     const dropData = {
       source,

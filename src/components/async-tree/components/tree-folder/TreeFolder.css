@@ -11,14 +11,14 @@
   background-color: rgba(0, 0, 0, 0.04);
 }
 
-.drop-target.drag-over::after {
+.tree-node.drag-over > div {
   border: 2px dashed #3b82f6;
-  border-radius: 0.3rem;
-}
+  border-radius: 0.25rem;
 
-.drop-target.drag-over .folder-name {
-  color: #3b82f6;
-  font-weight: 500;
+  .tree-folder .folder-name {
+    color: #3b82f6;
+    font-weight: 500;
+  }
 }
 
 .icon {
