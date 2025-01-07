@@ -44,15 +44,14 @@ export interface AsyncTreeProps {
   onChange?: (tree: TreeNode[]) => void
 }
 
-export interface TreeNodeProps
-  extends Pick<AsyncTreeProps, 'customFolder' | 'customItem'> {
+export interface TreeNodeProps extends Pick<AsyncTreeProps, 'customFolder' | 'customItem'> {
   node: TreeNode
   level: number
   isOpen: boolean
   isLoading: boolean
   children?: React.ReactNode
   onFolderClick: (node: FolderNode) => void
-  onDrop: (event: React.DragEvent, data: TreeMovement) => void
+  onDrop: (move: TreeMove) => void
 }
 
 export interface FolderProps {
@@ -69,19 +68,19 @@ export interface ItemProps {
   level: number
 }
 
-export type TreeMovement = {
+export type TreeMove = {
   source: TreeNode
   target: TreeNode
   position: DropPosition
 }
 
-export type MoveData = TreeMovement & {
+export type MoveData = TreeMove & {
   tree: TreeNode[]
   prevParent: FolderNode
   nextParent: FolderNode
 }
 
-export type DropData = TreeMovement & {
+export type DropData = TreeMove & {
   prevParent: FolderNode | null
   nextParent: FolderNode | null
 }

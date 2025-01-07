@@ -77,7 +77,7 @@ export default function useTreeNodeDnD(
       position: dragPosition,
     }
 
-    onDrop(e, dropData)
+    onDrop(dropData)
     setDragPosition(null)
   }
 

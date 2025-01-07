@@ -1,12 +1,7 @@
 import { Children } from 'react'
 import { TREE_NODE_INDENTATION } from '../../constants'
 import useTreeNodeDragAndDrop from '../../hooks/useTreeNodeDnD'
-import {
-  DropPosition,
-  FolderProps,
-  ItemProps,
-  TreeNodeProps,
-} from '../../types'
+import { DropPosition, TreeNodeProps } from '../../types'
 import { isFolderNode, isItemNode } from '../../utils/validations'
 import { default as DefaultFolder } from '../tree-folder/TreeFolder'
 import { default as DefaultItem } from '../tree-item/TreeItem'
@@ -44,20 +39,6 @@ export default function TreeNode({
 
   const dropOverClassName = isDroppingInside ? 'drag-over' : ''
 
-  const folderProps: FolderProps = {
-    level,
-    node,
-    isOpen,
-    isLoading,
-    childrenCount: Children.count(children),
-    onClick: onFolderClick,
-  }
-
-  const itemsProps: ItemProps = {
-    level,
-    node,
-  }
-
   const FolderComponent = customFolder ?? DefaultFolder
   const ItemComponent = customItem ?? DefaultItem
 
@@ -78,9 +59,18 @@ export default function TreeNode({
       {isDroppingBefore && <span className='drop-indicator' style={{ left }} />}
 
       <div data-testid={`node-content-${node.id}`} ref={nodeRef}>
-        {isFolder && <FolderComponent {...folderProps} />}
+        {isFolder && (
+          <FolderComponent
+            node={node}
+            level={level}
+            isLoading={isLoading}
+            isOpen={isOpen}
+            childrenCount={Children.count(children)}
+            onClick={onFolderClick}
+          />
+        )}
 
-        {isItem && <ItemComponent {...itemsProps} />}
+        {isItem && <ItemComponent node={node} level={level} />}
       </div>
 
       {isDroppingAfter && <span className='drop-indicator' style={{ left }} />}

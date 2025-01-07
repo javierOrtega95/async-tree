@@ -8,15 +8,11 @@ import {
   FolderNode,
   FoldersMap,
   FolderState,
-  TreeMovement,
+  TreeMove,
   TreeNode,
 } from './types'
 import { moveNode } from './utils/tree-operations'
-import {
-  getFoldersMap,
-  getParentMap,
-  recursiveTreeMap,
-} from './utils/tree-recursive'
+import { getFoldersMap, getParentMap, recursiveTreeMap } from './utils/tree-recursive'
 import { isFolderNode, isValidMove } from './utils/validations'
 
 export default function AsyncTree({
@@ -28,13 +24,8 @@ export default function AsyncTree({
   onDrop,
   onChange,
 }: AsyncTreeProps): JSX.Element {
-  const [tree, setTree] = useState<TreeNode[]>([
-    { ...ROOT_NODE, children: initialTree },
-  ])
-
-  const [foldersMap, setFoldersMap] = useState<FoldersMap>(() =>
-    getFoldersMap(initialTree)
-  )
+  const [tree, setTree] = useState<TreeNode[]>([{ ...ROOT_NODE, children: initialTree }])
+  const [foldersMap, setFoldersMap] = useState<FoldersMap>(() => getFoldersMap(initialTree))
 
   useEffect(() => {
     setTree([{ ...ROOT_NODE, children: initialTree }])
@@ -43,19 +34,16 @@ export default function AsyncTree({
 
   const parentMap = useMemo(() => getParentMap(tree), [tree])
 
-  const updateFolderState = (
-    folderId: FolderNode['id'],
-    folderState: Partial<FolderState>
-  ) => {
+  const updateFolderState = (folderId: FolderNode['id'], newFolderState: Partial<FolderState>) => {
     setFoldersMap((prevState) => {
       const prevFolderState = prevState.get(folderId)
 
-      const newFolderState = {
+      const updatedFolderState = {
         ...prevFolderState,
-        ...folderState,
+        ...newFolderState,
       }
 
-      return new Map(prevState).set(folderId, newFolderState)
+      return new Map(prevState).set(folderId, updatedFolderState)
     })
   }
 
@@ -83,6 +71,7 @@ export default function AsyncTree({
 
     try {
       updateFolderState(id, { isLoading: true })
+
       const children = await loadChildren(folder)
 
       setTree((prev) => {
@@ -105,19 +94,13 @@ export default function AsyncTree({
     }
   }
 
-  const handleDrop = (e: React.DragEvent, data: TreeMovement) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    const { source, target, position } = data
-
+  const handleDrop = ({ source, target, position }: TreeMove) => {
     if (source.id === target.id) return
 
-    const isDroppingInside =
-      position === DropPosition.Inside && isFolderNode(target)
+    const isDroppingInside = position === DropPosition.Inside
 
     const prevParent = parentMap.get(source.id)
-    const nextParent = isDroppingInside ? target : parentMap.get(target.id)
+    const nextParent = isDroppingInside && isFolderNode(target) ? target : parentMap.get(target.id)
 
     if (!prevParent || !nextParent) return
 

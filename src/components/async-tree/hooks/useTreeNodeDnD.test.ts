@@ -105,9 +105,7 @@ describe('useTreeNodeDnD', () => {
       height: 100,
     })
 
-    vi.spyOn($targetNode, 'getBoundingClientRect').mockImplementation(
-      mockGetBoundingClientRect
-    )
+    vi.spyOn($targetNode, 'getBoundingClientRect').mockImplementation(mockGetBoundingClientRect)
 
     act(() => {
       result.current.handleDragOver(dragEvent)
@@ -152,9 +150,7 @@ describe('useTreeNodeDnD', () => {
       height: 100,
     })
 
-    vi.spyOn($targetNode, 'getBoundingClientRect').mockImplementation(
-      mockGetBoundingClientRect
-    )
+    vi.spyOn($targetNode, 'getBoundingClientRect').mockImplementation(mockGetBoundingClientRect)
 
     act(() => {
       result.current.handleDragStart(dragEvent)
@@ -167,7 +163,7 @@ describe('useTreeNodeDnD', () => {
 
     expect(dragEvent.preventDefault).toHaveBeenCalled()
     expect(dragEvent.stopPropagation).toHaveBeenCalled()
-    expect(mockOnDrop).toHaveBeenCalledWith(dragEvent, {
+    expect(mockOnDrop).toHaveBeenCalledWith({
       source: nodeMock,
       target: targetMock,
       position: DropPosition.After,
