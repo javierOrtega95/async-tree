@@ -6,6 +6,7 @@ import { isFolderNode, isItemNode } from '../../utils/validations'
 import { default as DefaultFolder } from '../tree-folder/TreeFolder'
 import { default as DefaultItem } from '../tree-item/TreeItem'
 import './TreeNode.css'
+import DropIndicator from '../drop-indicator/DropIndicator'
 
 export default function TreeNode({
   node,
@@ -56,7 +57,9 @@ export default function TreeNode({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
-      {isDroppingBefore && <span className='drop-indicator' style={{ left }} />}
+      {isDroppingBefore && (
+        <DropIndicator id={`drop-indicator-before-${node.id}`} indentation={left} />
+      )}
 
       <div data-testid={`node-content-${node.id}`} ref={nodeRef}>
         {isFolder && (
@@ -73,7 +76,9 @@ export default function TreeNode({
         {isItem && <ItemComponent node={node} level={level} />}
       </div>
 
-      {isDroppingAfter && <span className='drop-indicator' style={{ left }} />}
+      {isDroppingAfter && (
+        <DropIndicator id={`drop-indicator-after-${node.id}`} indentation={left} />
+      )}
 
       {children}
     </li>

@@ -1,0 +1,7 @@
+.drop-indicator {
+  position: absolute;
+  height: 2px;
+  background-color: #3b82f6;
+  right: 0;
+  pointer-events: none;
+}

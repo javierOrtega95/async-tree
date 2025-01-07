@@ -1,3 +1,5 @@
+import { HTMLAttributes } from 'react'
+
 export enum TreeNodeType {
   Folder = 'folder',
   Item = 'item',
@@ -52,6 +54,10 @@ export interface TreeNodeProps extends Pick<AsyncTreeProps, 'customFolder' | 'cu
   children?: React.ReactNode
   onFolderClick: (node: FolderNode) => void
   onDrop: (move: TreeMove) => void
+}
+
+export interface DropIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
+  indentation: number
 }
 
 export interface FolderProps {
