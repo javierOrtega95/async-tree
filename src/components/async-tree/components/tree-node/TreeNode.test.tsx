@@ -78,7 +78,7 @@ describe('TreeNode Component', () => {
     expect($treeNode).toHaveStyle(`padding-left: ${TREE_NODE_INDENTATION * defaultProps.level}px`)
   })
 
-  it('should render default folder content correctly', () => {
+  it('should render default folder node correctly', () => {
     const folderProps = {
       ...defaultProps,
       node: mockFolderNode,
@@ -86,11 +86,11 @@ describe('TreeNode Component', () => {
 
     render(<TreeNode {...folderProps} />)
 
-    const $folderContent = screen.getByTestId(`node-content-${mockFolderNode.id}`)
-    expect($folderContent).toBeInTheDocument()
+    const $folderNode = screen.getByTestId(`tree-node-${mockFolderNode.id}`)
+    expect($folderNode).toBeInTheDocument()
   })
 
-  it('should render default item content correctly', () => {
+  it('should render default item node correctly', () => {
     const itemProps = {
       ...defaultProps,
       node: mockItemNode,
@@ -98,13 +98,13 @@ describe('TreeNode Component', () => {
 
     render(<TreeNode {...itemProps} />)
 
-    const $itemContent = screen.getByTestId(`node-content-${mockItemNode.id}`)
-    expect($itemContent).toBeInTheDocument()
+    const $itemNode = screen.getByTestId(`tree-node-${mockItemNode.id}`)
+    expect($itemNode).toBeInTheDocument()
   })
 
-  it('should render a custom folder content correctly', () => {
+  it('should render a custom folder node correctly', () => {
     const CusmtomFolder = ({ node }: FolderProps) => {
-      return <div data-testid={`custom-folder-content-${node.id}`}>Custom folder</div>
+      return <div data-testid={`custom-folder-${node.id}`}>Custom folder</div>
     }
 
     const props: TreeNodeProps = {
@@ -115,13 +115,13 @@ describe('TreeNode Component', () => {
 
     render(<TreeNode {...props} />)
 
-    const $customFolder = screen.getByTestId(`custom-folder-content-${mockFolderNode.id}`)
+    const $customFolder = screen.getByTestId(`custom-folder-${mockFolderNode.id}`)
     expect($customFolder).toBeInTheDocument()
   })
 
-  it('should render a custom item content correctly', () => {
+  it('should render a custom item node correctly', () => {
     const CusmtomItem = ({ node }: ItemProps) => (
-      <div data-testid={`custom-item-content-${node.id}`}>Custom folder</div>
+      <div data-testid={`custom-item-${node.id}`}>Custom item</div>
     )
 
     const props: TreeNodeProps = {
@@ -132,7 +132,7 @@ describe('TreeNode Component', () => {
 
     render(<TreeNode {...props} />)
 
-    const $customItem = screen.getByTestId(`custom-item-content-${mockItemNode.id}`)
+    const $customItem = screen.getByTestId(`custom-item-${mockItemNode.id}`)
     expect($customItem).toBeInTheDocument()
   })
 
@@ -154,9 +154,9 @@ describe('TreeNode Component', () => {
 
     render(<TreeNode {...props} />)
 
-    const $folderContent = screen.getByTestId(`node-content-${node.id}`)
+    const $folderNode = screen.getByTestId(`tree-node-${node.id}`)
 
-    await user.click($folderContent.firstChild! as Element)
+    await user.click($folderNode)
 
     expect(onFolderClick).toHaveBeenCalledWith(node)
   })

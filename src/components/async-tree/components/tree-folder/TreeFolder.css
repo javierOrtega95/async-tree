@@ -11,11 +11,11 @@
   background-color: rgba(0, 0, 0, 0.04);
 }
 
-.tree-node.drag-over > div {
+.tree-node.drag-over > .tree-folder {
   border: 2px dashed #3b82f6;
   border-radius: 0.25rem;
 
-  .tree-folder .folder-name {
+  .folder-name {
     color: #3b82f6;
     font-weight: 500;
   }

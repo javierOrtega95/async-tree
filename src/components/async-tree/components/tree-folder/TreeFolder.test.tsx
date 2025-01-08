@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 import { FolderNode, TreeNodeType } from '../../types'
 import TreeFolder from './TreeFolder'
 
@@ -10,19 +10,10 @@ const mockNode: FolderNode = {
   children: [],
 }
 
-const mockOnClick = vi.fn()
-
 describe('TreeFolder', () => {
   it('renders the TreeFolder component successfully', () => {
     render(
-      <TreeFolder
-        node={mockNode}
-        level={0}
-        isOpen={false}
-        isLoading={false}
-        childrenCount={0}
-        onClick={mockOnClick}
-      />
+      <TreeFolder node={mockNode} level={0} isOpen={false} isLoading={false} childrenCount={0} />
     )
 
     const { id, name } = mockNode
@@ -40,14 +31,7 @@ describe('TreeFolder', () => {
 
   it('displays a loading icon when isLoading is true', () => {
     render(
-      <TreeFolder
-        node={mockNode}
-        isOpen={false}
-        isLoading={true}
-        level={0}
-        childrenCount={0}
-        onClick={mockOnClick}
-      />
+      <TreeFolder node={mockNode} isOpen={false} isLoading={true} level={0} childrenCount={0} />
     )
 
     const $loadingIcon = screen.getByTestId(`${mockNode.id}-loading-icon`)
@@ -57,37 +41,11 @@ describe('TreeFolder', () => {
 
   it('displays an open chevron icon when isOpen is true', () => {
     render(
-      <TreeFolder
-        node={mockNode}
-        isOpen={true}
-        isLoading={false}
-        level={0}
-        childrenCount={0}
-        onClick={mockOnClick}
-      />
+      <TreeFolder node={mockNode} isOpen={true} isLoading={false} level={0} childrenCount={0} />
     )
 
     const $chevronIcon = screen.getByTestId(`${mockNode.id}-chevron-icon`)
     expect($chevronIcon).toBeInTheDocument()
     expect($chevronIcon).toHaveClass('icon chevron open')
-  })
-
-  it('calls the onClick handler when clicked', () => {
-    render(
-      <TreeFolder
-        node={mockNode}
-        level={0}
-        isOpen={false}
-        isLoading={false}
-        childrenCount={0}
-        onClick={mockOnClick}
-      />
-    )
-
-    const $treeFolder = screen.getByTestId(mockNode.id)
-    fireEvent.click($treeFolder)
-
-    expect(mockOnClick).toHaveBeenCalledTimes(1)
-    expect(mockOnClick).toHaveBeenCalledWith(mockNode)
   })
 })

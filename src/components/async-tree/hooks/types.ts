@@ -3,7 +3,7 @@ import { DropPosition } from '../types'
 
 export type TreeNodeDnDdata = {
   dragPosition: DropPosition | null
-  nodeRef: RefObject<HTMLDivElement>
+  nodeRef: RefObject<HTMLLIElement>
   handleDragStart: (e: React.DragEvent) => void
   handleDragEnter: (e: React.DragEvent) => void
   handleDragLeave: (e: React.DragEvent) => void

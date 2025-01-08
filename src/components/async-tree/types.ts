@@ -66,7 +66,6 @@ export interface FolderProps {
   childrenCount: number
   isOpen: boolean
   isLoading: boolean
-  onClick: (folder: FolderNode) => void
 }
 
 export interface ItemProps {

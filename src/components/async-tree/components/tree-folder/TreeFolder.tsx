@@ -1,23 +1,15 @@
-import { FolderNode, FolderProps } from '../../types'
+import { FolderProps } from '../../types'
 import './TreeFolder.css'
 
 export default function TreeFolder({
   node,
   isOpen = false,
   isLoading = false,
-  onClick,
 }: FolderProps): JSX.Element {
   return (
-    <div
-      id={node.id}
-      data-testid={node.id}
-      className='tree-folder'
-      onClick={() => onClick(node as FolderNode)}
-    >
+    <div id={node.id} data-testid={node.id} className='tree-folder'>
       <svg
-        data-testid={`${node.id}-${
-          isLoading ? 'loading-icon' : 'chevron-icon'
-        }`}
+        data-testid={`${node.id}-${isLoading ? 'loading-icon' : 'chevron-icon'}`}
         width={isLoading ? '12' : '24'}
         height={isLoading ? '12' : '24'}
         viewBox='0 0 24 24'
@@ -26,9 +18,7 @@ export default function TreeFolder({
         strokeWidth='2'
         strokeLinecap='round'
         strokeLinejoin='round'
-        className={`icon ${
-          isLoading ? 'loading' : `chevron ${isOpen ? 'open' : ''}`
-        }`}
+        className={`icon ${isLoading ? 'loading' : `chevron ${isOpen ? 'open' : ''}`}`}
       >
         {isLoading ? (
           <path d='M21 12a9 9 0 1 1-6.219-8.56'></path>

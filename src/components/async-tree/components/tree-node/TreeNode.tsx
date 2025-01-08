@@ -1,4 +1,4 @@
-import { Children } from 'react'
+import { Children, MouseEvent } from 'react'
 import { TREE_NODE_INDENTATION } from '../../constants'
 import useTreeNodeDragAndDrop from '../../hooks/useTreeNodeDnD'
 import { DropPosition, TreeNodeProps } from '../../types'
@@ -27,7 +27,7 @@ export default function TreeNode({
     handleDragLeave,
     handleDragOver,
     handleDrop,
-  } = useTreeNodeDragAndDrop({ ...node, isOpen }, onDrop)
+  } = useTreeNodeDragAndDrop(node, onDrop)
 
   const isFolder = isFolderNode(node)
   const isItem = isItemNode(node)
@@ -43,11 +43,20 @@ export default function TreeNode({
   const FolderComponent = customFolder ?? DefaultFolder
   const ItemComponent = customItem ?? DefaultItem
 
+  const handleClick = (e: MouseEvent) => {
+    if (!isFolder) return
+
+    e.stopPropagation()
+
+    onFolderClick(node)
+  }
+
   return (
     <li
       id={`tree-node-${node.id}`}
       data-testid={`tree-node-${node.id}`}
       role='treeitem'
+      ref={nodeRef}
       draggable={true}
       className={`tree-node ${dropOverClassName}`}
       style={{ paddingLeft: left }}
@@ -56,25 +65,23 @@ export default function TreeNode({
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
+      onClick={handleClick}
     >
       {isDroppingBefore && (
         <DropIndicator id={`drop-indicator-before-${node.id}`} indentation={left} />
       )}
 
-      <div data-testid={`node-content-${node.id}`} ref={nodeRef}>
-        {isFolder && (
-          <FolderComponent
-            node={node}
-            level={level}
-            isLoading={isLoading}
-            isOpen={isOpen}
-            childrenCount={Children.count(children)}
-            onClick={onFolderClick}
-          />
-        )}
+      {isFolder && (
+        <FolderComponent
+          node={node}
+          level={level}
+          isLoading={isLoading}
+          isOpen={isOpen}
+          childrenCount={Children.count(children)}
+        />
+      )}
 
-        {isItem && <ItemComponent node={node} level={level} />}
-      </div>
+      {isItem && <ItemComponent node={node} level={level} />}
 
       {isDroppingAfter && (
         <DropIndicator id={`drop-indicator-after-${node.id}`} indentation={left} />
