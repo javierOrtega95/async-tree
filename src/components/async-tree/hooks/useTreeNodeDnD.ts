@@ -9,7 +9,7 @@ export default function useTreeNodeDnD(
   onDrop: TreeNodeProps['onDrop']
 ): TreeNodeDnDdata {
   const [dragPosition, setDragPosition] = useState<DropPosition | null>(null)
-  const nodeRef = useRef<HTMLDivElement>(null)
+  const nodeRef = useRef<HTMLLIElement>(null)
   const dragCounter = useRef<number>(0)
 
   const handleDragStart = (e: React.DragEvent) => {
@@ -54,7 +54,6 @@ export default function useTreeNodeDnD(
       event: e,
       contentRect,
       isFolder,
-      isOpen: node.isOpen ?? false,
     })
 
     setDragPosition(position)

@@ -1,17 +1,8 @@
 import { afterAll, describe, expect, it, vi } from 'vitest'
-import {
-  firstChild,
-  mockTree,
-  parentNode,
-  secondChild,
-} from '../../../mocks/test-mocks'
+import { firstChild, mockTree, parentNode, secondChild } from '../../../mocks/test-mocks'
 import { THRESHOLD_BEFORE_PERCENT, THRESHOLD_MID_PERCENT } from '../constants'
 import { DropPosition, FolderNode } from '../types'
-import {
-  calculateDragPosition,
-  moveNode,
-  parseNodeData,
-} from './tree-operations'
+import { calculateDragPosition, moveNode, parseNodeData } from './tree-operations'
 
 describe('tree-operations utilities', () => {
   describe('moveNode', () => {
@@ -160,50 +151,44 @@ describe('tree-operations utilities', () => {
 
     describe('when node is a folder', () => {
       it('should return DropPosition.Before when dragging above the top threshold', () => {
-        const event = createDragEvent(60) // 10px from top (10%)
+        const event = createDragEvent(30)
         const result = calculateDragPosition({
           event,
           contentRect,
           isFolder: true,
-          isOpen: true,
         })
 
         expect(result).toBe(DropPosition.Before)
       })
 
       it('should return DropPosition.After when dragging below the bottom threshold (open folder)', () => {
-        const event = createDragEvent(180) // 30px above the bottom threshold (80%)
+        const event = createDragEvent(180)
         const result = calculateDragPosition({
           event,
           contentRect,
           isFolder: true,
-          isOpen: true,
         })
 
         expect(result).toBe(DropPosition.After)
       })
 
       it('should return DropPosition.Inside when dragging between Before and After thresholds (closed folder)', () => {
-        const event = createDragEvent(120) // 20px below the top threshold
+        const event = createDragEvent(120)
         const result = calculateDragPosition({
           event,
           contentRect,
           isFolder: true,
-          isOpen: false,
         })
 
         expect(result).toBe(DropPosition.Inside)
       })
 
       it('should return DropPosition.Before when dragging exactly at the top threshold', () => {
-        const event = createDragEvent(
-          contentRect.height * THRESHOLD_BEFORE_PERCENT
-        ) // exactly top threshold
+        const event = createDragEvent(contentRect.height * THRESHOLD_BEFORE_PERCENT)
         const result = calculateDragPosition({
           event,
           contentRect,
           isFolder: true,
-          isOpen: true,
         })
 
         expect(result).toBe(DropPosition.Before)
@@ -212,38 +197,33 @@ describe('tree-operations utilities', () => {
 
     describe('when node is an item', () => {
       it('should return DropPosition.Before when dragging above the mid threshold (not a folder)', () => {
-        const event = createDragEvent(40) // 40px from top (Below the mid threshold)
+        const event = createDragEvent(40)
         const result = calculateDragPosition({
           event,
           contentRect,
           isFolder: false,
-          isOpen: false,
         })
 
         expect(result).toBe(DropPosition.Before)
       })
 
       it('should return DropPosition.After when dragging below the mid threshold (not a folder)', () => {
-        const event = createDragEvent(120) // 120px from top (Above the mid threshold)
+        const event = createDragEvent(120)
         const result = calculateDragPosition({
           event,
           contentRect,
           isFolder: false,
-          isOpen: false,
         })
 
         expect(result).toBe(DropPosition.After)
       })
 
       it('should return DropPosition.Before when dragging exactly at the mid threshold (not a folder)', () => {
-        const event = createDragEvent(
-          contentRect.height * THRESHOLD_MID_PERCENT
-        ) // exactly mid threshold
+        const event = createDragEvent(contentRect.height * THRESHOLD_MID_PERCENT)
         const result = calculateDragPosition({
           event,
           contentRect,
           isFolder: false,
-          isOpen: false,
         })
 
         expect(result).toBe(DropPosition.Before)
@@ -252,9 +232,7 @@ describe('tree-operations utilities', () => {
   })
 
   describe('parseNodeData', () => {
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {})
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     afterAll(() => {
       consoleErrorSpy.mockRestore()

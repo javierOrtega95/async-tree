@@ -1,16 +1,9 @@
 import {
-  THRESHOLD_AFTER_CLOSED_PERCENT,
-  THRESHOLD_AFTER_OPEN_PERCENT,
+  THRESHOLD_AFTER_FOLDER_PERCENT,
   THRESHOLD_BEFORE_PERCENT,
   THRESHOLD_MID_PERCENT,
 } from '../constants'
-import {
-  MoveData,
-  DropPosition,
-  FolderNode,
-  TreeNode,
-  TreeNodeType,
-} from '../types'
+import { MoveData, DropPosition, FolderNode, TreeNode, TreeNodeType } from '../types'
 import { recursiveTreeMap } from './tree-recursive'
 
 export function moveNode(data: MoveData): TreeNode[] {
@@ -38,11 +31,9 @@ function handleSameParentMove({
   if (sourceIndex === -1 || targetIndex === -1) return tree
 
   // adjust target index when the source node is before the target node
-  const newTargetIndex =
-    targetIndex > sourceIndex ? targetIndex - 1 : targetIndex
+  const newTargetIndex = targetIndex > sourceIndex ? targetIndex - 1 : targetIndex
 
-  const newPosition =
-    position === DropPosition.Before ? newTargetIndex : newTargetIndex + 1
+  const newPosition = position === DropPosition.Before ? newTargetIndex : newTargetIndex + 1
 
   const newChildren = [...children]
 
@@ -77,9 +68,7 @@ function handleDifferentParentMove({
 
   return recursiveTreeMap(tree, (node) => {
     if (node.id === prevParent.id) {
-      const filteredChildren = prevParent.children.filter(
-        (child) => child.id !== source.id
-      )
+      const filteredChildren = prevParent.children.filter((child) => child.id !== source.id)
 
       // update children of prev parent
       return {
@@ -98,8 +87,7 @@ function handleDifferentParentMove({
       const { children } = nextParent
       const targetIndex = children.findIndex((child) => child.id === target.id)
 
-      const newPosition =
-        position === DropPosition.Before ? targetIndex : targetIndex + 1
+      const newPosition = position === DropPosition.Before ? targetIndex : targetIndex + 1
 
       const newChildren = [...children]
 
@@ -119,12 +107,10 @@ export function calculateDragPosition({
   event,
   contentRect,
   isFolder,
-  isOpen,
 }: {
   event: React.DragEvent
   contentRect: Pick<DOMRect, 'height' | 'top'>
   isFolder: boolean
-  isOpen: boolean
 }): DropPosition {
   const { height, top } = contentRect
   const relativeY = event.clientY - top
@@ -134,20 +120,14 @@ export function calculateDragPosition({
       return DropPosition.Before
     }
 
-    const bottomThreshold = isOpen
-      ? THRESHOLD_AFTER_OPEN_PERCENT
-      : THRESHOLD_AFTER_CLOSED_PERCENT
-
-    if (relativeY > height * bottomThreshold) {
+    if (relativeY > height * THRESHOLD_AFTER_FOLDER_PERCENT) {
       return DropPosition.After
     }
 
     return DropPosition.Inside
   }
 
-  return relativeY < height * THRESHOLD_MID_PERCENT
-    ? DropPosition.Before
-    : DropPosition.After
+  return relativeY < height * THRESHOLD_MID_PERCENT ? DropPosition.Before : DropPosition.After
 }
 
 export function parseNodeData(data: string): TreeNode | null {
